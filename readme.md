@@ -1,23 +1,40 @@
-# php reference
+
+# PHP Reference
+
 this will mainly be a reference on how to OOP in php and other methods that I think
 I need to learn how to use
 
-- [how to use class][class]
+- [php coding style guide][psr]
 
+## Design Patterns
+- [design reference guide][design-reference]
 
+## Suggestions
+- [how to use namespace]
+- [best security practices]
+
+[design-reference]:#design-reference-guide
+[psr]:#php-coding-style-guide
 [home]:#php-reference
-[class]:#how-to-use-class
 
+### design reference guide 
 
-### how to use class
-- like this dummy
+<details>
+<summary>
+View Content
+</summary>
 
-```php
+**reference**
+- [design patterns php](http://designpatternsphp.readthedocs.io/en/latest/)
 
-    class SimpleClass{
+</details>
 
-        public function say(){
-            echo "hello";
-        }
-    }
-```
+[go back :house:][home]
+
+### PHP coding style guide 
+
+**reference**
+- [psr-2](https://docs.opnsense.org/development/guidelines/psr2.html)
+- [psr-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
+
+[go back home][home]
