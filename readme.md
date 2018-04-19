@@ -55,6 +55,8 @@ a unique identifier with namespaces. This should ultimately avoid name collision
 
 ```
 
+
+
 **App.php**
 
 ```php
@@ -67,6 +69,38 @@ use Greeting\Hello;
 
 new Hello();// this should print out hello world
 
+
+```
+
+#### If you are using namespaces for functions 
+
+**Zelda.php**
+
+```php
+
+<?php
+
+namespace Zelda;
+
+function link(){
+
+echo "I swing swords and solve puzzles";
+}
+
+```
+
+
+**App.php**
+
+```php
+
+include "Zelda.php"
+
+use Zelda;
+
+Zelda\link();// this works 
+
+link(); // this will not work
 
 ```
     
