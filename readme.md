@@ -9,13 +9,70 @@ I need to learn how to use
 ## Design Patterns
 - [design reference guide][design-reference]
 
-## Suggestions
-- [how to use namespace]
-- [best security practices]
+## Namepspaces
+- [how to use namespace][namespace]
 
+## Suggestions
+- [best security practices]
+- [how to autoload classes]
+
+[namespace]:#how-to-use-namespaces
 [design-reference]:#design-reference-guide
 [psr]:#php-coding-style-guide
 [home]:#php-reference
+
+---
+
+
+### how to use namespaces
+
+<details>
+    <summary>
+        View Content
+    </summary>
+    
+    **videos**
+    
+    - [PHP Namespaces Tutorial](https://www.youtube.com/watch?v=t3SvDAoODr8)
+    
+    So the point of namespaces is to give classes,functions,or constants that might have similar names 
+    a unique identifier with namespaces. This should ultimately avoid name collisions 
+    
+    **Hello.php**
+    
+    ```php
+        <?php
+        
+        namespace Greeting;
+        
+        class Hello{
+        
+            public function __construct(){
+            
+                echo "hello world";
+            }
+        }
+    
+    ```
+    
+    **App.php**
+    
+    ```php
+    // You need to include the file where the class is, if you don't
+    // you will get an error
+    include "Hello.php";
+    
+    use Greeting\Hello;
+    
+    
+    new Hello();
+        
+    
+    ```
+    
+</details>
+
+[go back :house:][home]
 
 ### design reference guide 
 
