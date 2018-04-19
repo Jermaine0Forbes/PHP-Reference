@@ -31,44 +31,44 @@ I need to learn how to use
         View Content
     </summary>
     
-    **videos**
-    
-    - [PHP Namespaces Tutorial](https://www.youtube.com/watch?v=t3SvDAoODr8)
-    
-    So the point of namespaces is to give classes,functions,or constants that might have similar names 
-    a unique identifier with namespaces. This should ultimately avoid name collisions 
-    
-    **Hello.php**
-    
-    ```php
-        <?php
-        
-        namespace Greeting;
-        
-        class Hello{
-        
-            public function __construct(){
-            
-                echo "hello world";
-            }
+**videos**
+
+- [PHP Namespaces Tutorial](https://www.youtube.com/watch?v=t3SvDAoODr8)
+
+So the point of namespaces is to give classes,functions,or constants that might have similar names 
+a unique identifier with namespaces. This should ultimately avoid name collisions 
+
+**Hello.php**
+
+```php
+    <?php
+
+    namespace Greeting;
+
+    class Hello{
+
+        public function __construct(){
+
+            echo "hello world";
         }
-    
-    ```
-    
-    **App.php**
-    
-    ```php
-    // You need to include the file where the class is, if you don't
-    // you will get an error
-    include "Hello.php";
-    
-    use Greeting\Hello;
-    
-    
-    new Hello();
-        
-    
-    ```
+    }
+
+```
+
+**App.php**
+
+```php
+// You need to include the file where the class is, if you don't
+// you will get an error
+include "Hello.php";
+
+use Greeting\Hello;
+
+
+new Hello();// this should print out hello world
+
+
+```
     
 </details>
 
