@@ -15,6 +15,9 @@ I need to learn how to use
 ## Suggestions
 - [best security practices]
 - [how to autoload classes]
+- [how to use define]
+- [how to query a database]
+
 
 [namespace]:#how-to-use-namespaces
 [design-reference]:#design-reference-guide
