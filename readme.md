@@ -9,7 +9,13 @@ I need to learn how to use
 ## Design Patterns
 - [design reference guide][design-reference]
 
-## Namepspaces
+## Libraries
+
+- [how to use faker][faker-basic]
+- [how to create your own faker provider][faker-provider]
+
+
+## Namespaces
 - [how to use namespace][namespace]
 
 ## Suggestions
@@ -18,13 +24,208 @@ I need to learn how to use
 - [how to use define]
 - [how to query a database]
 
-
+[faker-provider]:#how-to-create-your-own-faker-provider
+[faker-basic]:#how-to-use-faker
 [namespace]:#how-to-use-namespaces
 [design-reference]:#design-reference-guide
 [psr]:#php-coding-style-guide
 [home]:#php-reference
 
 ---
+
+
+### how to create your own faker provider
+
+<details>
+<summary>
+View Content
+</summary>
+
+:link: **reference**
+
+- [Generating Fake Data in PHP With Faker](http://wern-ancheta.com/blog/2016/01/28/generating-fake-data-in-php-with-faker/)
+
+1. create a seperate class like this 
+
+```php
+<?php
+
+namespace Faker\Provider;
+
+class Element extends \Faker\Provider\Base {
+
+
+    protected static $element = ["fire","water","wind","earth"];
+    
+    
+    public function element(){
+        return static::randomElement(static::$element);
+    }
+
+
+}
+```
+
+2. now in your index file, add the class for the provider
+
+```php
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PHP Practice</title>
+    <meta name="name" content="content">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <?php
+        require_once 'vendor/autoload.php';
+        include "element.php";
+        
+        use Faker\Provider\Element;
+
+        $faker = Faker\Factory::create();
+        $faker->addProvider(new Element($faker));// add the provider and that is all you got to do
+        
+       echo  $faker->element;
+        
+        
+
+
+		?>
+
+    </header>
+    <main>
+
+    </main>
+    <footer>
+
+    </footer>
+</body>
+
+</html>
+
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+
+###  how to use faker
+
+<details>
+<summary>
+View Content
+</summary>
+
+:link: **reference**
+
+- [Faker Github](https://github.com/fzaninotto/Faker)
+
+1. install faker with composer 
+
+```
+composer require fzaninotto/faker
+
+```
+2. next in your index.php file require or include the faker autoload file
+
+```php
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PHP Practice</title>
+    <meta name="name" content="content">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+
+</head>
+
+<body>
+    <header>
+        <?php
+		
+		// including the file
+        require_once 'vendor/autoload.php';
+        
+        
+
+
+		?>
+
+    </header>
+    <main>
+
+    </main>
+    <footer>
+
+    </footer>
+</body>
+
+</html>
+
+```
+
+3. Now call the create method from the Factory in order to be able to generate
+faker data
+
+```php
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PHP Practice</title>
+    <meta name="name" content="content">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+
+</head>
+
+<body>
+    <header>
+        <?php
+		
+		// including the file
+        require_once 'vendor/autoload.php';
+        
+		//initiate faker
+        $faker = Faker\Factory::create();
+
+		// Now faker should be able to generate random data
+		echo $faker->name;
+
+		?>
+
+    </header>
+    <main>
+
+    </main>
+    <footer>
+
+    </footer>
+</body>
+
+</html>
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+
 
 
 ### how to use namespaces
