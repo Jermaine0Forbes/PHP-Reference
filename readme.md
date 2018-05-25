@@ -18,12 +18,16 @@ I need to learn how to use
 ## Namespaces
 - [how to use namespace][namespace]
 
+## Settings
+- [How to Setup Timezone][php-timezone]
+
 ## Suggestions
 - [best security practices]
 - [how to autoload classes]
 - [how to use define]
 - [how to query a database]
 
+[php-timezone]:#how-to-setup-timezone-in-php
 [faker-provider]:#how-to-create-your-own-faker-provider
 [faker-basic]:#how-to-use-faker
 [namespace]:#how-to-use-namespaces
@@ -32,6 +36,48 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+### how to setup timezone in php
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [How to Setup Timezone in php.ini or PHP Script](https://tecadmin.net/setup-timezone-in-php-configuration/)
+- [date_default_timezone_get](http://php.net/manual/en/function.date-default-timezone-get.php)
+
+1. go to php.ini with vim 
+
+```
+sudo vim /etc/php/7.0/apache2/php.ini
+```
+
+2. search the date.timezone section with the "?" keyword
+
+```
+? date.timezone
+```
+
+3. once you to find the section add the appropriate timezone 
+
+```
+ date.timezone = "America/New_York"
+```
+
+4. after you have saved the file, then restart apache 
+
+```
+sudo service apache2 restart;
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 
 ### how to create your own faker provider
