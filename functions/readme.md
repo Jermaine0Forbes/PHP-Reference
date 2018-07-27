@@ -9,10 +9,43 @@ These are the essential functions I need to learn how to use
 ## Files
 - [create a file][put-contents]
 
+
+- [unset][unset]
+[unset]:#unset
 [home]:#php-functions
 [chown]:#chown
 [chmod]:#chmod
 [put-contents]:#file_put_contents
+
+### unset
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [w3resource](https://www.w3resource.com/php/function-reference/unset.php)
+
+**w3 definition:** The unset() function destroys a given variable
+
+```
+unset (var1, var2.... )
+```
+
+```php
+<?php
+$xyz='w3resource.com';
+echo 'Before using unset() the value of $xys is : '. $xyz.'<br>';
+unset($xyz);
+echo 'After using unset() the value of $xys is : '. $xyz;
+?>
+```
+</details>
+
+[go back :house:][home]
+
+
 
 ### chown
 

@@ -26,6 +26,8 @@ I need to learn how to use
 - [how to autoload classes]
 - [how to use define]
 - [how to query a database]
+- [how to use .htaccess files]
+- [how to create a layout file]
 
 [php-timezone]:#how-to-setup-timezone-in-php
 [faker-provider]:#how-to-create-your-own-faker-provider
