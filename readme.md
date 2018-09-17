@@ -28,6 +28,7 @@ I need to learn how to use
 - [how to query a database]
 - [how to use .htaccess files]
 - [how to create a layout file]
+- [how to use traits]
 
 [php-timezone]:#how-to-setup-timezone-in-php
 [faker-provider]:#how-to-create-your-own-faker-provider
