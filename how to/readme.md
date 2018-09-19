@@ -1,4 +1,4 @@
-# How To 
+# How To
 
 [how to create a simple routing system][simple-router]
 
@@ -10,36 +10,43 @@
 [simple-router]:#how-to-create-a-simple-routing-system
 [home]:#how-to
 
-### how to fetch data 
+### how to fetch data
 
 <details>
 <summary>
 View Content
 </summary>
 
+<details>
+<summary>
+With Functions
+</summary>
+</details>
+
 ```php
-<?php
 
-// connects php to mysql
-$conn = mysqli_connect("localhost","jermaine","yurizan8","Testing");
+ <?php
+
+ // connects php to mysql
+ $conn = mysqli_connect("localhost","jermaine","yurizan8","Testing");
 
 
-// checks if there is a connection error
-if (mysqli_connect_errno())
+ // checks if there is a connection error
+ if (mysqli_connect_errno())
   {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
 
-$sql = "select * from animals";
+ $sql = "select * from animals";
 
 
-?>
+ ?>
 
 
-<main>
+ <main>
     <section class="container">
-        <?php 
+        <?php
             if($result = mysqli_query($conn, $sql)){
 
               while($row = mysqli_fetch_assoc($result)){
@@ -50,7 +57,7 @@ $sql = "select * from animals";
                   $create = $row["created_at"];  
                   $update = $row["updated_at"];  
 
-                    echo "<div><h3>$id: $animal</h3> <ul> <li>sex: $sex</li><li>farm id: $farm</li><li>born: $create</li><li>current date: $update</li> </ul></div>"; 
+                    echo "<div><h3>$id: $animal</h3> <ul> <li>sex: $sex</li><li>farm id: $farm</li><li>born: $create</li><li>current date: $update</li> </ul></div>";
                 }
 
         }
@@ -59,11 +66,61 @@ $sql = "select * from animals";
         mysqli_free_result();
         mysqli_close();
         ?>
-    
+
     </section>
 
-</main>
+   </main>
 ```
+<details>
+<summary>
+With OOP
+</summary>
+
+#### Or with OOP
+
+```php
+<?php
+$sql = new mysqli("localhost","jermaine","yurizan8","Testing");
+if($sql->connect_errno){
+   echo "something is wrong";
+}
+
+$query = "select * from animals";
+$result = $sql->query($query)
+ ?>
+
+ <main>
+     <section class="container">
+         <?php
+             if($result){
+
+               while($row = $result->fetch_assoc()){
+                   $id = $row["id"];
+                   $animal = $row["animal"];
+                   $sex = $row["sex"];
+                   $farm = $row["farmer_id"];
+                   $create = $row["created_at"];
+                   $update = $row["updated_at"];
+
+                     echo "<div><h3>$id: $animal</h3> <ul> <li>sex: $sex</li><li>farm id: $farm</li><li>born: $create</li><li>current date: $update</li> </ul></div>";
+                 }
+
+         }
+
+
+         $result->free();
+         $sql->close();
+         ?>
+
+     </section>
+
+ </main>
+
+```
+
+</details>
+
+
 </details>
 
 [go back :house:][home]
@@ -77,7 +134,7 @@ $sql = "select * from animals";
 View Content
 </summary>
 
-1. create an .htaccess file and add this 
+1. create an .htaccess file and add this
 
 ```
 RewriteEngine On
@@ -86,7 +143,7 @@ RewriteRule . index.php [L]
 RewriteEngine On
 ```
 
-2. create an index file and add this 
+2. create an index file and add this
 
 ```php
 $request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
@@ -114,5 +171,3 @@ switch ($request_uri[0]) {
 </details>
 
 [go back :house:][home]
-
-
