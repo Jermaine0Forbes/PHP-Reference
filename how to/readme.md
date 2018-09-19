@@ -21,8 +21,6 @@ View Content
 <summary>
 With Functions
 </summary>
-</details>
-
 ```php
 
  <?php
@@ -71,6 +69,9 @@ With Functions
 
    </main>
 ```
+</details>
+
+
 <details>
 <summary>
 With OOP
@@ -82,7 +83,7 @@ With OOP
 <?php
 $sql = new mysqli("localhost","jermaine","yurizan8","Testing");
 if($sql->connect_errno){
-   echo "something is wrong";
+    echo "Big Error: ".$sql->connect_error;
 }
 
 $query = "select * from animals";
