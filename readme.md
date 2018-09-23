@@ -7,7 +7,9 @@ I need to learn how to use
 - [php coding style guide][psr]
 
 ## Essential Functions
-- [isset][]
+- [isset][isset]
+- [empty][empty]
+- [define][]
 
 ## Design Patterns
 - [design reference guide][design-reference]
@@ -33,6 +35,7 @@ I need to learn how to use
 - [how to create a layout file]
 - [how to use traits]
 
+[isset]:#isset
 [php-timezone]:#how-to-setup-timezone-in-php
 [faker-provider]:#how-to-create-your-own-faker-provider
 [faker-basic]:#how-to-use-faker
@@ -43,6 +46,40 @@ I need to learn how to use
 
 ---
 
+### isset
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [isset, empty, and is_null](https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/)
+
+**My definition**: isset checks whether or not a value is null or not. This function is best used for $_GET or $_POST type of globals, not variables. If the value is 0 or
+an empty string it will still return true
+
+```php
+$a = 0;
+
+// it works
+echo (isset($a) == true)? "it works <br>" : "is not set <br>" ;
+
+$b = "";
+
+// it works
+echo (isset($b) == true)? "it works <br>" : "is not set <br>" ;
+
+
+// it does not work
+echo (isset($c) == true)? "it works <br>" : "is not set <br>" ;
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to setup timezone in php
 

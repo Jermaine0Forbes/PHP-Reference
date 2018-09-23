@@ -1,12 +1,12 @@
 # How To
 
-[how to create a simple routing system][simple-router]
+- [how to create a simple routing system][simple-router]
 
 ## MYSQLI
 
-[how to fetch data][fetch-data]
-[how to delete data][delete-data]
-[how to update data][update-data]
+- [how to fetch data][fetch-data]
+- [how to delete data][delete-data]
+- [how to update data][update-data]
 
 [update-data]:#how-to-update-data
 [delete-data]:#how-to-delete-data
@@ -29,7 +29,7 @@ $sql = new mysqli("localhost","username","password","Testing");
 
 if($sql->connect_error){
 
-  echo "PHP error my nig : ".$sql->connect_errno;
+  die("PHP error my nig : ".$sql->connect_error);
 }
 
 $query = "update animals set animal='mongoose' where id=2";
