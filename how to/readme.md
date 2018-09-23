@@ -5,10 +5,133 @@
 ## MYSQLI
 
 [how to fetch data][fetch-data]
+[how to delete data][delete-data]
+[how to update data][update-data]
 
+[update-data]:#how-to-update-data
+[delete-data]:#how-to-delete-data
 [fetch-data]:#how-to-fetch-data
 [simple-router]:#how-to-create-a-simple-routing-system
 [home]:#how-to
+
+
+### how to update data
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+<?php
+
+$sql = new mysqli("localhost","username","password","Testing");
+
+if($sql->connect_error){
+
+  echo "PHP error my nig : ".$sql->connect_errno;
+}
+
+$query = "update animals set animal='mongoose' where id=2";
+
+if( $sql->query($query) == true){
+  echo "row has been updated";
+  $query = "select * from animals";
+  $result = $sql->query($query);
+}else{
+
+  echo "something went wrong";
+}
+
+?>
+
+<main>
+    <section class="container">
+    <?php
+
+      if(!empty($result)){
+
+        while($row = $result->fetch_assoc()){
+          $id = $row['id'];
+          $name = $row['animal'];
+          $sex = $row['sex'];
+
+          echo "<h2> $id </h2>";
+          echo "<p> $name </p>";
+          echo "<p> $sex </p>";
+        }
+        $result->free();
+      }
+      $sql->close();
+     ?>
+
+    </section>
+
+</main>
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### how to delete data
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+<?php
+
+$sql = new mysqli("localhost","username","password","Testing");
+
+if($sql->connect_error){
+  echo "something is wrong";
+
+}
+
+$query = "delete from animals where id = 1";
+
+if ( $sql->query($query) == true){
+  echo "<h2> row has been deleted</h2>";
+  $query = "select * from animals";
+  $result = $sql->query($query);
+}else{
+  echo "error";
+}
+
+?>
+
+<main>
+    <section class="container">
+      <?php
+        if (!empty($result) ){
+
+          while($row = $result->fetch_assoc()){
+
+            echo "<h2> ".$row['id']." </h2> <p> ".$row['animal']." </p><p> ".$row['sex']."</p>";
+
+          }
+
+            $result->free();
+        }
+      $sql->close();
+        ?>
+
+    </section>
+
+</main>
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to fetch data
 

@@ -6,6 +6,9 @@ I need to learn how to use
 
 - [php coding style guide][psr]
 
+## Essential Functions
+- [isset][]
+
 ## Design Patterns
 - [design reference guide][design-reference]
 
@@ -52,7 +55,7 @@ View Content
 - [How to Setup Timezone in php.ini or PHP Script](https://tecadmin.net/setup-timezone-in-php-configuration/)
 - [date_default_timezone_get](http://php.net/manual/en/function.date-default-timezone-get.php)
 
-1. go to php.ini with vim 
+1. go to php.ini with vim
 
 ```
 sudo vim /etc/php/7.0/apache2/php.ini
@@ -64,13 +67,13 @@ sudo vim /etc/php/7.0/apache2/php.ini
 ? date.timezone
 ```
 
-3. once you to find the section add the appropriate timezone 
+3. once you to find the section add the appropriate timezone
 
 ```
  date.timezone = "America/New_York"
 ```
 
-4. after you have saved the file, then restart apache 
+4. after you have saved the file, then restart apache
 
 ```
 sudo service apache2 restart;
@@ -94,7 +97,7 @@ View Content
 
 - [Generating Fake Data in PHP With Faker](http://wern-ancheta.com/blog/2016/01/28/generating-fake-data-in-php-with-faker/)
 
-1. create a seperate class like this 
+1. create a seperate class like this
 
 ```php
 <?php
@@ -105,8 +108,8 @@ class Element extends \Faker\Provider\Base {
 
 
     protected static $element = ["fire","water","wind","earth"];
-    
-    
+
+
     public function element(){
         return static::randomElement(static::$element);
     }
@@ -132,15 +135,15 @@ class Element extends \Faker\Provider\Base {
         <?php
         require_once 'vendor/autoload.php';
         include "element.php";
-        
+
         use Faker\Provider\Element;
 
         $faker = Faker\Factory::create();
         $faker->addProvider(new Element($faker));// add the provider and that is all you got to do
-        
+
        echo  $faker->element;
-        
-        
+
+
 
 
 		?>
@@ -177,7 +180,7 @@ View Content
 
 - [Faker Github](https://github.com/fzaninotto/Faker)
 
-1. install faker with composer 
+1. install faker with composer
 
 ```
 composer require fzaninotto/faker
@@ -194,18 +197,18 @@ composer require fzaninotto/faker
     <title>PHP Practice</title>
     <meta name="name" content="content">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+
 
 </head>
 
 <body>
     <header>
         <?php
-		
+
 		// including the file
         require_once 'vendor/autoload.php';
-        
-        
+
+
 
 
 		?>
@@ -236,17 +239,17 @@ faker data
     <title>PHP Practice</title>
     <meta name="name" content="content">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+
 
 </head>
 
 <body>
     <header>
         <?php
-		
+
 		// including the file
         require_once 'vendor/autoload.php';
-        
+
 		//initiate faker
         $faker = Faker\Factory::create();
 
@@ -283,13 +286,13 @@ faker data
     <summary>
         View Content
     </summary>
-    
+
 **videos**
 
 - [PHP Namespaces Tutorial](https://www.youtube.com/watch?v=t3SvDAoODr8)
 
-So the point of namespaces is to give classes,functions,or constants that might have similar names 
-a unique identifier with namespaces. This should ultimately avoid name collisions 
+So the point of namespaces is to give classes,functions,or constants that might have similar names
+a unique identifier with namespaces. This should ultimately avoid name collisions
 
 **Hello.php**
 
@@ -325,7 +328,7 @@ new Hello();// this should print out hello world
 
 ```
 
-#### If you are using namespaces for functions 
+#### If you are using namespaces for functions
 
 **Zelda.php**
 
@@ -351,17 +354,17 @@ include "Zelda.php"
 
 use Zelda;
 
-Zelda\link();// this works 
+Zelda\link();// this works
 
 link(); // this will not work
 
 ```
-    
+
 </details>
 
 [go back :house:][home]
 
-### design reference guide 
+### design reference guide
 
 <details>
 <summary>
@@ -375,7 +378,7 @@ View Content
 
 [go back :house:][home]
 
-### PHP coding style guide 
+### PHP coding style guide
 
 **reference**
 - [psr-2](https://docs.opnsense.org/development/guidelines/psr2.html)
