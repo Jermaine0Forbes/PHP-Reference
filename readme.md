@@ -71,8 +71,10 @@ View Content
 **My Definition:** filter_var strips out or sanitizes a variable based on the second parameter
 
 
-
+<details>
+<summary>
 #### FILTER_SANITIZE_STRING
+</summary>
 
 I think this only strips out tags of the variable
 
@@ -86,6 +88,9 @@ var_dump($filter); //string(7) " hello "
 
  ?>
 ```
+
+</details>
+
 
 </details>
 
