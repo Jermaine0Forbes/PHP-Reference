@@ -71,25 +71,89 @@ View Content
 **My Definition:** filter_var strips out or sanitizes a variable based on the second parameter
 
 
-<details>
-<summary>
-#### FILTER_SANITIZE_STRING
-</summary>
+  <details>
+  <summary>
+   FILTER_SANITIZE_STRING
+  </summary>
 
-I think this only strips out tags of the variable
+  I think this only strips out tags of the variable
 
-```php
-<?php
+  ```php
+  <?php
 
-$str = "<h2> hello </h2>";
-$filter  = filter_var($str, FILTER_SANITIZE_STRING);
+  $str = "<h2> hello </h2>";
+  $filter  = filter_var($str, FILTER_SANITIZE_STRING);
 
-var_dump($filter); //string(7) " hello "
+  var_dump($filter); //string(7) " hello "
 
- ?>
-```
+   ?>
+  ```
 
-</details>
+  </details>
+
+
+
+  <details>
+  <summary>
+  FILTER_SANITIZE_FULL_SPECIAL_CHARS
+  </summary>
+
+  ```php
+  <?php
+
+  $str = "<h2> hello </h2> ";
+
+  $filter  = filter_var($str, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+  var_dump($filter); //string(29) "<h2> hello </h2> "
+
+
+   ?>
+  ```
+
+  </details>
+
+
+  <details>
+  <summary>
+  FILTER_SANITIZE_EMAIL
+  </summary>
+
+  ```php
+  <?php
+
+  $str = "<h2> hello </h2> ";
+
+  $filter  = filter_var($str, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+  var_dump($filter); //string(29) "<h2> hello </h2> "
+
+
+   ?>
+  ```
+
+  </details>
+
+
+  <details>
+  <summary>
+  FILTER_SANITIZE_EMAIL
+  </summary>
+
+  Remove all characters except letters, digits and !#$%&'*+-=?^_`{|}~@.[].
+
+  ```php
+
+  $str = "example@gmail.com";
+
+  $filter  = filter_var($str, FILTER_SANITIZE_EMAIL);
+
+  var_dump($filter); //string(17) "example@gmail.com"
+  ```
+
+  </details>
+
+
 
 
 </details>
