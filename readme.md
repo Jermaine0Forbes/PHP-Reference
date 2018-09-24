@@ -6,10 +6,19 @@ I need to learn how to use
 
 - [php coding style guide][psr]
 
+
+
 ## Essential Functions
 - [isset][isset]
 - [empty][empty]
+- [var_dump][var-dump]
 - [define][]
+
+## String Functions
+- [trim][trim]
+
+## Sanitize Forms
+- [filter_var][filter-var]
 
 ## Design Patterns
 - [design reference guide][design-reference]
@@ -18,7 +27,6 @@ I need to learn how to use
 
 - [how to use faker][faker-basic]
 - [how to create your own faker provider][faker-provider]
-
 
 ## Namespaces
 - [how to use namespace][namespace]
@@ -35,6 +43,9 @@ I need to learn how to use
 - [how to create a layout file]
 - [how to use traits]
 
+[filter-var]:#filter_var
+[trim]:#trim
+[empty]:#empty
 [isset]:#isset
 [php-timezone]:#how-to-setup-timezone-in-php
 [faker-provider]:#how-to-create-your-own-faker-provider
@@ -45,6 +56,147 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+### filter_var
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [How to Validate (and Sanitize) User Input In PHP Using Filter_Input() and Filter_Var()](https://www.johnmorrisonline.com/validate-sanitize-user-input-php-using-filter_input-filter_var/)
+
+**My Definition:** filter_var strips out or sanitizes a variable based on the second parameter
+
+
+
+#### FILTER_SANITIZE_STRING
+
+I think this only strips out tags of the variable
+
+```php
+<?php
+
+$str = "<h2> hello </h2>";
+$filter  = filter_var($str, FILTER_SANITIZE_STRING);
+
+var_dump($filter); //string(7) " hello "
+
+ ?>
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+
+### var_dump
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [var_dump() function](https://www.w3resource.com/php/function-reference/var_dump.php)
+
+**My definition**: Outputs information based on the type of the value and the value itself
+
+```php
+
+$arr = ["   dog", "cat         ", "       fish        "];
+
+
+foreach( $arr as $a){
+
+  $val = trim($a);
+}
+
+
+
+var_dump($arr);
+// ouputs: array(3) { [0]=> string(6) " dog" [1]=> string(12) "cat " [2]=> string(19) " fish " }
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### trim
+
+<details>
+<summary>
+View Content
+</summary>
+
+**My definition:** trims any extra whitespace from a string
+
+```php
+$arr = ["   dog", "cat         ", "       fish        "];
+
+
+foreach( $arr as $a){
+
+  $val = trim($a);
+}
+
+
+
+var_dump($arr); //array(3) { [0]=> string(6) " dog" [1]=> string(12) "cat " [2]=> string(19) " fish " }
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### empty
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [empty reference](https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/)
+
+**My definition:** returns a **true** boolean value, if the value was 0, or null, or "", array(), or unset
+
+```php
+
+<?php
+
+  $a = 0;
+
+  echo empty($a) ? "true <br>" : "false <br>";//true
+
+  $b = array();
+  echo empty($b) ? "true <br>" : "false <br>";//true
+
+  $c = "";
+  echo empty($c) ? "true <br>" : "false <br>";//true
+
+
+  echo empty($d) ? "true <br>" : "false <br>";//true
+
+  $e = -1;
+  echo empty($e) ? "true <br>" : "false <br>";//false
+
+ ?>
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### isset
 
