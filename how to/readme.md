@@ -3,17 +3,128 @@
 - [how to create a simple routing system][simple-router]
 
 ## MYSQLI
-
+- [insert data with a form][insert-form]
 - [how to fetch data][fetch-data]
 - [how to delete data][delete-data]
 - [how to update data][update-data]
 
+[insert-form]:#insert-data-with-a-form
 [update-data]:#how-to-update-data
 [delete-data]:#how-to-delete-data
 [fetch-data]:#how-to-fetch-data
 [simple-router]:#how-to-create-a-simple-routing-system
 [home]:#how-to
 
+
+
+### insert data with a form
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+<?php
+
+$sql = new mysqli("localhost","username","password", "Testing");
+
+if($sql->connect_error){
+  echo "connection error: ".$sql->connect_error;
+}
+
+if(isset($_POST["animal"])){
+
+$query = "insert into animals (id, animal, sex, farmer_id) values (?,?,?,?)";
+
+$id = $_POST['id'];
+$animal = $_POST['animal'];
+$sex = $_POST['sex'];
+$farm = $_POST['farmer_id'];
+
+ $state = $sql->prepare($query);
+
+ $state->bind_param("issi", $id, $animal, $sex,$farm);
+ $success = $state->execute();
+
+if($success){
+  echo "Data has been saved <br>";
+}
+
+}
+
+
+?>
+
+<main>
+    <section class="container">
+
+      <h2>Insert Data to Animal Table</h2>
+
+        <form class="form" action="/practice" method="post">
+          <div class="row">
+            <div class="col-md-4">
+              <label for="">Id</label>
+              <input class="form-control" type="number" name="id" value="" >
+
+            </div>
+            <div class="col-md-4">
+              <label for="">Animal</label>
+                <input class="form-control" type="text" name="animal" value="" required>
+            </div>
+            <div class="col-md-4">
+              <label for="">Farmer Id</label>
+                <input class="form-control" type="number" min="1" max="20" name="farmer_id" value="" required>
+            </div>
+          </div>
+          <div class="form-group pt-4">
+            <label for="">Sex</label>
+            <select class="form-control" name="sex">
+              <option value="male">male</option>
+              <option value="female">male</option>
+            </select>
+          </div>
+          <input class="btn btn-primary" type="submit"  value="submit">
+        </form>
+    <?php
+
+      $query = "select * from animals order by id desc";
+
+      $result = $sql->query($query);
+
+      if(!empty($result)){
+
+        while($row = $result->fetch_assoc()){
+          $id = $row['id'] ;
+          $an = $row['animal'] ;
+          $sex = $row['sex'] ;
+          $far = $row['farmer_id'] ;
+
+          echo "<h2> $id </h2>
+            <p>$an</p>
+            <p>$sex</p>
+            <p>$far</p>
+
+          ";
+
+        }
+
+        $result->free();
+      }
+
+      $sql->close();
+     ?>
+
+    </section>
+
+</main>
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to update data
 
