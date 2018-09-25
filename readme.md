@@ -79,14 +79,14 @@ View Content
   I think this only strips out tags of the variable
 
   ```php
-  <?php
+
 
   $str = "<h2> hello </h2>";
   $filter  = filter_var($str, FILTER_SANITIZE_STRING);
 
   var_dump($filter); //string(7) " hello "
 
-   ?>
+
   ```
 
   </details>
@@ -99,7 +99,7 @@ View Content
   </summary>
 
   ```php
-  <?php
+
 
   $str = "<h2> hello </h2> ";
 
@@ -108,7 +108,6 @@ View Content
   var_dump($filter); //string(29) "<h2> hello </h2> "
 
 
-   ?>
   ```
 
   </details>
