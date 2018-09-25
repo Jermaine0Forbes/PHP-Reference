@@ -5,8 +5,8 @@ this will mainly be a reference on how to OOP in php and other methods that I th
 I need to learn how to use
 
 - [php coding style guide][psr]
-
-
+- [how to use define][define]
+- [how to query a database][query-data]
 
 ## Essential Functions
 - [isset][isset]
@@ -14,8 +14,17 @@ I need to learn how to use
 - [var_dump][var-dump]
 - [define][define]
 
+
+## Array Functions
+- [explode][explode]
+
+
 ## String Functions
 - [trim][trim]
+- [implode][implode]
+
+## Validate Forms
+- [filter_validate_email][filter-validate-email]
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -37,12 +46,16 @@ I need to learn how to use
 ## Suggestions
 - [best security practices]
 - [how to autoload classes]
-- [how to use define]
-- [how to query a database]
 - [how to use .htaccess files]
 - [how to create a layout file]
 - [how to use traits]
 
+[filter-validate-email]:#filter_validate_email
+[explode]:#explode
+[implode]:#implode
+[query-data]:#how-to-query-a-database
+[define]:#define
+[var-dump]:#var_dump
 [filter-var]:#filter_var
 [trim]:#trim
 [empty]:#empty
@@ -58,12 +71,153 @@ I need to learn how to use
 ---
 
 
+### filter_validate_email
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+$str = "example@gmail.com";
+$str2 = "jermaine forbes";
+$str3 = "jermainegmail@com";
+
+var_dump(filter_var($str,FILTER_VALIDATE_EMAIL));
+var_dump(filter_var($str2,FILTER_VALIDATE_EMAIL));
+var_dump(filter_var($str3,FILTER_VALIDATE_EMAIL));
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### explode
+
+<details>
+<summary>
+View Content
+</summary>
+
+**references**
+- [explode() Function](https://www.w3schools.com/php/func_string_explode.asp)
+
+**My definition:** removes the character from the string and splits the rest into
+array
+
+```php
+$str = "edgar allen poe";
+
+$r = explode("e",$str);
+
+var_dump($r); //array(4) { [0]=> string(0) "" [1]=> string(8) "dgar all" [2]=> string(4) "n po" [3]=> string(0) "" }
+
+$str = "earth, wind, fire";
+
+$r = explode(",",$str);
+
+var_dump($r); //array(3) { [0]=> string(5) "earth" [1]=> string(5) " wind" [2]=> string(5) " fire" }
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### implode
+<details>
+<summary>
+View Content
+</summary>
+
+**references**
+- [implode() Function](https://www.w3schools.com/php/func_string_implode.asp)
+
+```php
+$arr = ["fish   ","  dog  ","  cat"];
+
+$r = implode(" ",$arr);
+
+var_dump($r);//string(21) "fish dog cat"
+
+
+$arr2 = ["  fish   ","  dog  ","  cat"];
+
+$a = implode(" *----",$arr2);
+
+var_dump($a);//string(33) " fish *---- dog *---- cat"
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### how to query a database
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+
+$sql = new mysqli("localhost","jermaine","yurizan8","Testing");
+if($sql->connect_errno){
+    echo "Big Error: ".$sql->connect_error;
+}
+
+$query = "select * from animals";
+$result = $sql->query($query)
+
+
+
+             if($result){
+
+               while($row = $result->fetch_assoc()){
+                   $id = $row["id"];
+                   $animal = $row["animal"];
+                   $sex = $row["sex"];
+                   $farm = $row["farmer_id"];
+                   $create = $row["created_at"];
+                   $update = $row["updated_at"];
+
+                     echo "<div><h3>$id: $animal</h3>
+                     <ul>
+                     <li>sex: $sex</li>
+                     <li>farm id: $farm</li>
+                     <li>born: $create</li>
+                     <li>current date: $update</li>
+                     </ul></div>";
+                 }
+
+         }
+
+
+         $result->free();
+         $sql->close();
+
+
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
 ### define
 
 <details>
 <summary>
 View Content
 </summary>
+
+**reference**
+- [define](http://php.net/manual/en/function.define.php)
 
 Constants are much like variables, except for the following differences
 
