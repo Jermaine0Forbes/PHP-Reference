@@ -12,7 +12,7 @@ I need to learn how to use
 - [isset][isset]
 - [empty][empty]
 - [var_dump][var-dump]
-- [define][]
+- [define][define]
 
 ## String Functions
 - [trim][trim]
@@ -57,6 +57,31 @@ I need to learn how to use
 
 ---
 
+
+### define
+
+<details>
+<summary>
+View Content
+</summary>
+
+Constants are much like variables, except for the following differences
+
+```php
+define("DOG", "bark!");
+
+echo DOG;//bark!
+
+$d = constant("DOG");
+
+echo "<br> $d";//bark!
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### filter_var
 
