@@ -25,6 +25,8 @@ I need to learn how to use
 
 ## Validate Forms
 - [filter_validate_email][filter-validate-email]
+- [filter_validate_int][filter-validate-int]
+- [filter_validate_float][filter-validate-float]
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -50,6 +52,8 @@ I need to learn how to use
 - [how to create a layout file]
 - [how to use traits]
 
+[filter-validate-float]:#filter_validate_float
+[filter-validate-int]:#filter_validate_int
 [filter-validate-email]:#filter_validate_email
 [explode]:#explode
 [implode]:#implode
@@ -70,6 +74,67 @@ I need to learn how to use
 
 ---
 
+### filter_validate_float
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+$str = 542.1242234;
+$str2 = "12";
+$str3 = "234.43";
+
+var_dump(filter_var($str,FILTER_VALIDATE_FLOAT));
+echo "<br>";
+var_dump(filter_var($str2,FILTER_VALIDATE_FLOAT));
+echo "<br>";
+var_dump(filter_var($str3,FILTER_VALIDATE_FLOAT));
+
+/* outputs:
+float(542.1242234)
+float(12)
+float(234.43)
+*/
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### filter_validate_int
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+$str = "example@gmail.com";
+$str2 = "12";
+$str3 = "234.43";
+
+var_dump(filter_var($str,FILTER_VALIDATE_INT));
+echo "<br>";
+var_dump(filter_var($str2,FILTER_VALIDATE_INT));
+echo "<br>";
+var_dump(filter_var($str3,FILTER_VALIDATE_INT));
+
+/* outputs:
+bool(false)
+int(12)
+bool(false)
+
+*/
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### filter_validate_email
 
