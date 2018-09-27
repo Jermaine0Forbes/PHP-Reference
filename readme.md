@@ -19,6 +19,10 @@ I need to learn how to use
 - [explode][explode]
 
 
+## Date Functions
+- [date][date]
+
+
 ## String Functions
 - [trim][trim]
 - [implode][implode]
@@ -52,6 +56,7 @@ I need to learn how to use
 - [how to create a layout file]
 - [how to use traits]
 
+[date]:#date
 [filter-validate-float]:#filter_validate_float
 [filter-validate-int]:#filter_validate_int
 [filter-validate-email]:#filter_validate_email
@@ -73,6 +78,30 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### date
+
+<details>
+<summary>
+View Content
+</summary>
+
+- [date](http://php.net/manual/en/function.date.php)
+
+Character|Description|Example
+-|-|-
+d|Day of the month, 2 digits with leading zeros|01 to 31
+D|A textual representation of a day, three letters|Mon through Sun
+x|x|x
+
+```php
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### filter_validate_float
 
