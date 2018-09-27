@@ -96,10 +96,19 @@ Character|Description|Example
 -|-|-
 d|Day of the month, 2 digits with leading zeros|01 to 31
 D|A textual representation of a day, three letters|Mon through Sun
-x|x|x
+l|A full textual representation of the day of the week| Sunday through Saturday
+n|Numeric representation of a month, without leading zeros|1 through 12
+Y|A full numeric representation of a year, 4 digits|1999 or 2003
+y|A two digit representation of a year|99 or 03
+A|Uppercase Ante meridiem and Post meridiem|AM or PM
+i|Minutes with leading zeros|00 to 59
+s|Seconds, with leading zeros|	00 through 59
+c|ISO 8601 date (added in PHP 5)|2004-02-12T15:19:21+00:00
+g|12-hour format of an hour without leading zeros|	1 through 12
 
 ```php
-
+echo date("g:i:s");
+// 4:57:12
 ```
 
 </details>
