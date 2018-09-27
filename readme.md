@@ -54,6 +54,10 @@ I need to learn how to use
 - [how to autoload classes]
 - [how to use .htaccess files]
 - [how to create a layout file]
+- [how to use ajax with PHP]
+- [php date functions]
+- [php hashing passwords]
+- [mysqli functions]
 - [how to use traits]
 
 [date]:#date
