@@ -14,6 +14,9 @@ I need to learn how to use
 - [var_dump][var-dump]
 - [define][define]
 
+## Ajax Examples
+- [select ajax][ajax-select]
+
 
 ## Array Functions
 - [explode][explode]
@@ -56,10 +59,12 @@ I need to learn how to use
 - [how to create a layout file]
 - [how to use ajax with PHP]
 - [php date functions]
+- [php regular expressions]
 - [php hashing passwords]
 - [mysqli functions]
 - [how to use traits]
 
+[ajax-select]:#select-ajax
 [date]:#date
 [filter-validate-float]:#filter_validate_float
 [filter-validate-int]:#filter_validate_int
@@ -82,6 +87,138 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+### select ajax
+
+<details>
+<summary>
+View Content
+</summary>
+
+**practice.php**
+
+```php
+
+
+<main>
+    <section class="container">
+
+      <form  method="POST" class="col-4" action="/practice">
+        <label for="">ID:</label>
+        <input class="form-control" type="number" min="1" name="id" value="">
+        <input  id="submitBtn" class="btn btn-primary" type="submit" name="" value="submit">
+      </form>
+
+      <div id="data-info">
+
+      </div>
+
+
+    </section>
+
+    <script type="text/javascript">
+
+      (function(){
+        var form = document.getElementsByTagName("form")[0],
+        id,
+        info,
+        url;
+
+
+
+
+        form.onsubmit = function(){
+
+           id = document.querySelector("input[type='number']");
+           info  = $("#data-info");
+           url = "/views/ajax.php?id="+id.value;
+           console.log(url)
+          $.ajax({url:url})
+            .done(function(data){
+              // console.log(data);
+               var result = JSON.parse(data);
+               // var result = data;
+               console.log(result);
+              info.html(result.data);
+            });
+
+          return false;
+        }//onsubmit
+
+
+      })()
+    </script>
+
+</main>
+
+```
+
+**ajax.php**
+
+```php
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
+$id = $_REQUEST["id"];
+if(isset($id) && filter_var($id, FILTER_VALIDATE_INT) ){
+
+  $sql = new mysqli("localhost","jermaine","yurizan8","Testing");
+
+  if($sql->connect_error){
+    die($sql->connect_error);
+  }
+  $stmt = "select id, animal, sex from animals where id = ?";
+
+   $query = $sql->prepare($stmt);
+  $query->bind_param("i", $id);
+  $query->bind_result($i, $ani, $sex);
+  $success = $query->execute();
+
+if($success){
+
+
+  while($query->fetch()){
+    $data = "
+      <h2> Id: $i </h2>
+      <p> Animal: $ani </p>
+      <p> Sex: $sex </p>
+    ";
+  }
+
+  $json = json_encode(["data" => $data]);
+}else{
+   $data =" ERROR: ";
+
+    $json = json_encode(["data" => $data]);
+}
+
+  $query->close();
+
+}else{
+
+  $data ="SOME FUCK SHIT IS HAPPENING";
+
+  $json = json_encode(["data" => $data]) ;
+
+
+
+}
+// header('Content-Type: application/json');
+
+
+echo $json;
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 ### date
 
