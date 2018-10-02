@@ -1,6 +1,8 @@
-# PHP Functions 
+# PHP Functions
 
-These are the essential functions I need to learn how to use 
+These are the essential functions I need to learn how to use
+
+## MSQLI
 
 ## Permissions
 - [chown][chown]
@@ -77,7 +79,7 @@ View Content
 </summary>
 
 **reference**
-- [chmod](http://php.net/manual/en/function.chmod.php) 
+- [chmod](http://php.net/manual/en/function.chmod.php)
 
 ```
 <?php
@@ -98,7 +100,7 @@ View Content
 
 - [file_put_contents](http://php.net/manual/en/function.file-put-contents.php)
 
-```php 
+```php
 $filename = getcwd()."/farmer.json";
 file_put_contents($filename,$farm);
 chmod($filename,0775);
@@ -106,4 +108,3 @@ chmod($filename,0775);
 </details>
 
 [go back :house:][home]
-
