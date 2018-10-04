@@ -16,6 +16,7 @@ I need to learn how to use
 
 ## Ajax Examples
 - [select ajax][ajax-select]
+- [how to update data with ajax][update-ajax]
 
 
 ## Array Functions
@@ -57,13 +58,15 @@ I need to learn how to use
 - [how to autoload classes]
 - [how to use .htaccess files]
 - [how to create a layout file]
-- [how to use ajax with PHP]
 - [php date functions]
 - [php regular expressions]
 - [php hashing passwords]
 - [mysqli functions]
 - [how to use traits]
 
+
+
+[update-ajax]:#how-to-update-data-with-ajax
 [ajax-select]:#select-ajax
 [date]:#date
 [filter-validate-float]:#filter_validate_float
@@ -88,6 +91,219 @@ I need to learn how to use
 
 ---
 
+
+### how to update data with ajax
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### practice.php
+
+```php
+
+
+<main>
+    <section class="container">
+      <h2>Update your data</h2>
+
+      <form  method="POST" class="col-4" action="/practice">
+        <label for="">Choose an ID:</label>
+        <input class="form-control mb-4" type="number" min="1" name="id" value="">
+        <input  id="submitBtn" class="btn btn-primary" type="submit" name="" value="submit">
+      </form>
+
+      <form id="form-2" class="col-4" style="border-top:1px solid #eee; margin-top:2em; padding-top:2em; " method="post">
+        <div class="form-group">
+          <label for="">ID</label>
+          <input type="number" class="form-control" name="id2" value="">
+        </div>
+        <div class="form-group">
+          <label for="">Animal</label>
+          <input type="text" class="form-control" name="animal" value="">
+        </div>
+        <div class="form-group">
+          <label for="">Sex</label>
+          <input type="text" class="form-control" name="sex" value="">
+        </div>
+        <input type="submit" class="btn btn-primary" name="" value="update">
+      </form>
+
+
+
+      <div id="data-info">
+
+      </div>
+
+
+    </section>
+
+    <script type="text/javascript">
+
+      (function(){
+        var form = document.getElementsByTagName("form")[0],
+        id,
+        info,
+        url,
+        form2 = $("#form-2"),
+        formTwo = document.querySelector("#form-2"),
+        info  = $("#data-info");
+        let animal = document.querySelector("input[name='animal']");
+        let Id = document.querySelector("input[name='id2']");
+        let sex = document.querySelector("input[name='sex']");
+
+        form2.hide();
+
+        form.onsubmit = function(){
+
+           id = document.querySelector("input[type='number']");
+
+           url = "/views/ajax.php?id="+id.value;
+           console.log(url)
+          $.ajax({url:url})
+            .done(function(data){
+              // console.log(data);
+               var r = JSON.parse(data);
+
+               if(r.error){
+                  info.html(r.error);
+               }else{
+                 Id.value = r.id;
+                 animal.value = r.animal;
+                 sex.value = r.sex;
+               }
+              // info.html(result.data);
+
+              form2.show();
+            });
+
+          return false;
+        }//onsubmit
+
+
+        formTwo.onsubmit = function(){
+
+           // animal = document.querySelector("input[name='animal']").value;
+           //  Id = document.querySelector("input[name='id']").value;
+           // let sex = document.querySelector("input[name='sex']").value;
+
+           let data = {sex:sex.value, Id:Id.value, animal:animal.value};
+           url = "/views/ajax.php";
+
+
+           $.ajax({url:url, data:data})
+           .done(function(response){
+             console.log(response)
+             let r = JSON.parse(response);
+
+             info.html(r.msg);
+
+
+           })//ajax
+
+           return false;
+        }
+
+      })()
+    </script>
+
+</main>
+
+```
+#### ajax.php
+
+```php
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
+
+if(isset($_REQUEST["Id"])){
+
+  $Id = $_REQUEST["Id"];
+  $animal = $_REQUEST["animal"];
+  $sex = $_REQUEST["sex"];
+
+}
+
+if(isset($_REQUEST["id"]) && filter_var($_REQUEST["id"], FILTER_VALIDATE_INT) ){
+
+
+  $id = $_REQUEST["id"];
+  $sql = new mysqli("localhost","username","password","Testing");
+
+  if($sql->connect_error){
+    die($sql->connect_error);
+  }
+  $stmt = "select id, animal, sex from animals where id = ?";
+
+   $query = $sql->prepare($stmt);
+  $query->bind_param("i", $id);
+  $query->bind_result($i, $ani, $sex);
+  $success = $query->execute();
+
+if($success){
+
+
+  while($query->fetch()){
+    // $data = "
+    //   <h2> Id: $i </h2>
+    //   <p> Animal: $ani </p>
+    //   <p> Sex: $sex </p>
+    // ";
+
+    $data = ["id" => $i , "animal" => $ani, "sex" => $sex];
+  }
+
+  $json = json_encode($data);
+}else{
+   $data =" ERROR: ";
+
+    $json = json_encode(["error" => $data]);
+}
+
+  $query->close();
+
+}else if (isset($Id) && isset($animal) && isset($sex)){
+
+  $sql = new mysqli("localhost","username","password","Testing");
+
+  if($sql->connect_error){
+    die($sql->connect_error);
+  }
+
+  $q = "update animals set animal = ?, sex = ? where id = ?";
+  $state = $sql->prepare($q);
+  $state->bind_param("ssi", $animal, $sex, $Id );
+  $success = $state->execute();
+  $sql->close();
+
+  if($success){
+    $json = json_encode(["msg" => "your data has been updated"]);
+  }else{
+    $json = json_encode(["msg" => "something went wrong"]);
+  }
+}else{
+
+  $data ="SOME FUCK SHIT IS HAPPENING";
+
+  $json = json_encode(["error" => $data]) ;
+
+
+
+}
+
+echo $json;
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### select ajax
 
