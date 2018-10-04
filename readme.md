@@ -17,7 +17,7 @@ I need to learn how to use
 ## Ajax Examples
 - [select ajax][ajax-select]
 - [how to update data with ajax][update-ajax]
-
+- [how to delete data with ajax][delete-ajax]
 
 ## Array Functions
 - [explode][explode]
@@ -65,7 +65,7 @@ I need to learn how to use
 - [how to use traits]
 
 
-
+[delete-ajax]:#how-to-delete-data-with-ajax
 [update-ajax]:#how-to-update-data-with-ajax
 [ajax-select]:#select-ajax
 [date]:#date
@@ -90,6 +90,141 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to delete data with ajax
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### practice.php
+
+```php
+
+
+<main>
+    <section class="container">
+      <h2>Delete your data</h2>
+
+      <form  method="POST" class="col-4" action="/practice">
+        <label for="">Choose an ID that needs to be deleted:</label>
+        <input class="form-control mb-4" type="number" min="1" name="id" value="">
+        <input  id="submitBtn" class="btn btn-primary" type="submit" name="" value="submit">
+      </form>
+
+
+
+      <div id="data-info">
+
+      </div>
+
+
+    </section>
+
+    <script type="text/javascript">
+
+      (function(){
+        var form = document.getElementsByTagName("form")[0],
+        id,
+        info,
+        url,
+        info  = $("#data-info");
+
+
+        form.onsubmit = function(){
+
+           id = document.querySelector("input[type='number']");
+
+           url = "/views/ajax.php";
+           data = {id:id.value}
+           // console.log(url)
+          $.ajax({url:url, data:data})
+            .done(function(data){
+              // console.log(data);
+               var r = JSON.parse(data);
+
+               if(r.error){
+                  info.html(r.error);
+               }else{
+                   info.html(r.data);
+               }
+
+
+
+            });
+
+          return false;
+        }//onsubmit
+
+
+
+      })()
+    </script>
+
+</main>
+
+```
+#### ajax.php
+
+```php
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
+
+if(isset($_REQUEST['id']) && filter_var($_REQUEST['id'], FILTER_VALIDATE_INT)){
+
+  $id = $_REQUEST['id'];
+
+  $sql = new mysqli("localhost","username","password","Testing");
+
+  if($sql->connect_error){
+    die($sql->connect_error);
+  }
+
+  $query = "select id,animal,sex from animals where id = ?";
+
+  $state = $sql->prepare($query);
+  $state->bind_param("i",$id);
+  $state->bind_result($i, $ani, $sex);
+  $success = $state->execute();
+
+  if($success){
+    while($state->fetch()){
+      $data = "$ani with the id of <strong> $i</strong> is deleted";
+    }
+
+
+
+    $query = "delete from animals where id = $i";
+    $success = $sql->query($query);
+      if($success){
+        $json = json_encode(["data" => $data]);
+      }
+
+  }else{
+
+    $json = json_encode(["error" => "some error happened in mysql"]);
+  }
+    // $success->free();
+    $sql->close();
+
+}else{
+
+  $json = json_encode(["error" => "either the id was not recognized or some other fuck shit happened"]);
+}
+
+echo $json;
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 
 ### how to update data with ajax
