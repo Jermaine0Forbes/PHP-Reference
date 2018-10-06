@@ -8,6 +8,9 @@ I need to learn how to use
 - [how to use define][define]
 - [how to query a database][query-data]
 
+## Filesystem
+- how to write data to a file
+
 ## Essential Functions
 - [isset][isset]
 - [empty][empty]
@@ -18,6 +21,7 @@ I need to learn how to use
 - [select ajax][ajax-select]
 - [how to update data with ajax][update-ajax]
 - [how to delete data with ajax][delete-ajax]
+- [how to insert data with ajax][insert-ajax]
 
 ## Array Functions
 - [explode][explode]
@@ -25,7 +29,8 @@ I need to learn how to use
 
 ## Date Functions
 - [date][date]
-
+- [date_create][date-create]
+- [date_format][date-format]
 
 ## String Functions
 - [trim][trim]
@@ -64,7 +69,9 @@ I need to learn how to use
 - [mysqli functions]
 - [how to use traits]
 
-
+[date-format]:#date_format
+[date-create]:#date_create
+[insert-ajax]:#how-to-insert-data-with-ajax
 [delete-ajax]:#how-to-delete-data-with-ajax
 [update-ajax]:#how-to-update-data-with-ajax
 [ajax-select]:#select-ajax
@@ -90,6 +97,221 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+### date_format
+
+<details>
+<summary>
+View Content
+</summary>
+
+**My definition:** date_format is a function that takes two parameters, one is the
+datetime object, and the second is how you want to format it. So its like the date function
+so I'm going to drop the table in here too
+
+Character|Description|Example
+-|-|-
+d|Day of the month, 2 digits with leading zeros|01 to 31
+D|A textual representation of a day, three letters|Mon through Sun
+l|A full textual representation of the day of the week| Sunday through Saturday
+n|Numeric representation of a month, without leading zeros|1 through 12
+Y|A full numeric representation of a year, 4 digits|1999 or 2003
+y|A two digit representation of a year|99 or 03
+A|Uppercase Ante meridiem and Post meridiem|AM or PM
+i|Minutes with leading zeros|00 to 59
+s|Seconds, with leading zeros|	00 through 59
+c|ISO 8601 date (added in PHP 5)|2004-02-12T15:19:21+00:00
+g|12-hour format of an hour without leading zeros|	1 through 12
+
+```php
+
+echo date_format(date_create(), "Y-m-d h:i:s");
+
+
+
+// outputs: 2018-10-05 07:47:20
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### date_create
+
+<details>
+<summary>
+View Content
+</summary>
+
+**My definition:** creates a new instance of a DateTime object
+
+```php
+
+
+  echo date_format(date_create(), "Y-m-d h:i:s");
+
+
+
+// outputs: 2018-10-05 07:47:20
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### how to insert data with ajax
+
+<details>
+<summary>
+View Content
+</summary>
+
+
+#### practice.php
+
+```php
+
+
+<main>
+    <section class="container">
+      <h2>Create an Animal</h2>
+      <?php echo date_format(date_create(), "Y-m-d h:i:s"); ?>
+
+      <form  method="POST" class="col-4" >
+        <div class="form-group">
+          <label for="">Id:</label>
+          <input class="form-control id" type="number" min="1" name="id" value="">
+        </div>
+        <div class="form-group">
+          <label for="">Animal:</label>
+          <input class="form-control animal" type="text" name="animal" value="">
+        </div>
+        <div class="form-group">
+          <label for="">Sex:</label>
+          <select class="form-control" name="sex">
+            <option selected value="male">male</option>
+            <option value="female">female</option>
+          </select>
+        </div>
+
+        <input  id="submitBtn" class="btn btn-primary" type="submit" value="submit">
+      </form>
+
+
+
+      <div id="data-info">
+
+      </div>
+
+
+    </section>
+
+    <script type="text/javascript">
+
+      (function(){
+        var form = document.getElementsByTagName("form")[0],
+        id,
+        info,
+        url,
+        info  = $("#data-info");
+
+
+        form.onsubmit = function(){
+           id = document.querySelector("input[name='id']");
+           let ani = document.querySelector("input[name='animal']");
+          let sex = document.querySelector("select[name='sex']");
+
+           url = "/views/ajax.php";
+          let data = {id:id.value, animal: ani.value, sex:sex.value}
+
+          $.ajax({url:url, data:data})
+            .done(function(data){
+              console.log(data)
+               var r = JSON.parse(data);
+
+               if(r.error){
+                  info.html(r.error);
+               }else{
+                   info.html(r.data);
+               }
+
+            });
+
+          return false;
+        }//onsubmit
+
+
+
+      })()
+    </script>
+
+</main>
+
+```
+
+#### ajax.php
+
+```php
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
+
+if(isset($_REQUEST['id']) && isset($_REQUEST['animal']) && isset($_REQUEST['sex'])){
+
+  $id = $_REQUEST['id'];
+  $animal = $_REQUEST['animal'];
+  $sex = $_REQUEST['sex'];
+  $date = date_format(date_create(), "Y-m-d h:i:s");
+  $fid = 1;
+
+  $sql = new mysqli("localhost","username","password","Testing");
+
+  if($sql->connect_error){
+    die($sql->connect_error);
+  }
+
+  $query = "insert into animals  (id,animal,sex,farmer_id,created_at,updated_at) values  (?,?,?,?,?,?)";
+
+  $state = $sql->prepare($query);
+  $state->bind_param("ississ",$id ,$animal, $sex,$fid,$date,$date);
+  // $state->bind_result($id, $ani, $sex,$f_id);
+  $success = $state->execute();
+
+  if($success){
+      $data = "<p style='font-size:1.3em; color:green'>
+      $animal with the id of <strong> $id</strong> has been created </p>";
+
+    $json = json_encode(["data" => $data]);
+
+  }else{
+
+    $data = "<p style='font-size:1.3em color:red'> some error occured</p>";
+    $json = json_encode(["error" => $data]);
+  }
+    $state->close();
+
+}else{
+
+  $json = json_encode(["error" => "either the id was not recognized or some other fuck shit happened"]);
+}
+
+echo $json;
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 ### how to delete data with ajax
 

@@ -11,8 +11,9 @@ These are the essential functions I need to learn how to use
 ## Files
 - [create a file][put-contents]
 
-
+## Other
 - [unset][unset]
+
 [unset]:#unset
 [home]:#php-functions
 [chown]:#chown
@@ -36,12 +37,12 @@ unset (var1, var2.... )
 ```
 
 ```php
-<?php
+
 $xyz='w3resource.com';
 echo 'Before using unset() the value of $xys is : '. $xyz.'<br>';
 unset($xyz);
 echo 'After using unset() the value of $xys is : '. $xyz;
-?>
+
 ```
 </details>
 
