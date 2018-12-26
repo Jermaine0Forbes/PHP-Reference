@@ -5,17 +5,7 @@ this will mainly be a reference on how to OOP in php and other methods that I th
 I need to learn how to use
 
 - [php coding style guide][psr]
-- [how to use define][define]
-- [how to query a database][query-data]
 
-## Filesystem
-- how to write data to a file
-
-## Essential Functions
-- [isset][isset]
-- [empty][empty]
-- [var_dump][var-dump]
-- [define][define]
 
 ## Ajax Examples
 - [select ajax][ajax-select]
@@ -32,20 +22,38 @@ I need to learn how to use
 - [date_create][date-create]
 - [date_format][date-format]
 
+## Design Patterns
+- [design reference guide][design-reference]
+
+
+## Essential Functions
+- [isset][isset]
+- [empty][empty]
+- [var_dump][var-dump]
+- [define][define]
+- [how to use define][define]
+
+## Filesystem
+- [how to write data to a file][put-contents]
+- [how to create a file][touch]
+
+## MySQLi
+- [how to query a database][query-data]
+
+## Sanitize Forms
+- [filter_var][filter-var]
+
 ## String Functions
 - [trim][trim]
 - [implode][implode]
+
+## Regular Expressions
+- [preg_match][]
 
 ## Validate Forms
 - [filter_validate_email][filter-validate-email]
 - [filter_validate_int][filter-validate-int]
 - [filter_validate_float][filter-validate-float]
-
-## Sanitize Forms
-- [filter_var][filter-var]
-
-## Design Patterns
-- [design reference guide][design-reference]
 
 ## Libraries
 
@@ -63,12 +71,11 @@ I need to learn how to use
 - [how to autoload classes]
 - [how to use .htaccess files]
 - [how to create a layout file]
-- [php date functions]
-- [php regular expressions]
 - [php hashing passwords]
-- [mysqli functions]
 - [how to use traits]
 
+[touch]:#how-to-create-a-file
+[put-contents]:#how-to-write-data-to-a-file
 [date-format]:#date_format
 [date-create]:#date_create
 [insert-ajax]:#how-to-insert-data-with-ajax
@@ -97,6 +104,56 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+
+### how to create a file
+
+<details>
+<summary>
+View Content
+</summary>
+
+```
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### how to write data to a file
+
+<details>
+<summary>
+View Content
+</summary>
+
+- [file_put_contents](http://php.net/manual/en/function.file-put-contents.php)
+
+**Note:** make sure that your file that you are trying to create is in a folder that
+has group owner to be similar to what apache is represented as, usually it is www-data.
+I think I explained to badly, basically I wanted to say that you should make sure that
+www-data is going to be the group owner of the folder you are going to put it in.
+
+```php
+
+$farm = "data";
+$filename = getcwd()."/farmer.json";
+$result =file_put_contents($filename,$farm);
+chmod($filename,0775);
+
+echo $result // result returns either a 1 for  the file has been successfully created
+            // or 0 meaning that the file was not created
+```
+
+
+</details>
+
+
+[go back :house:][home]
 
 
 ### date_format
