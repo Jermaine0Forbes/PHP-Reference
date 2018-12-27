@@ -114,7 +114,22 @@ I need to learn how to use
 View Content
 </summary>
 
-```
+- [touch](http://php.net/manual/en/function.touch.php)
+
+**My Definition:**This is exactly the same as linux touch command, you are just doing
+it in PHP
+
+```php
+
+$file = getcwd()."myfile.txt";
+
+if(file_exists($file)){
+    echo "cool you created a file";
+
+}else{
+
+    touch($file);// this creates the file;
+}
 
 ```
 
