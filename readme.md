@@ -36,6 +36,8 @@ I need to learn how to use
 ## Filesystem
 - [how to write data to a file][put-contents]
 - [how to create a file][touch]
+- [check if file exists][file-exists]
+- [how to get a file][get-contents]
 
 ## MySQLi
 - [how to query a database][query-data]
@@ -74,6 +76,8 @@ I need to learn how to use
 - [php hashing passwords]
 - [how to use traits]
 
+[get-contents]:#how-to-get-a-file
+[file-exists]:#file_exists
 [touch]:#how-to-create-a-file
 [put-contents]:#how-to-write-data-to-a-file
 [date-format]:#date_format
@@ -106,6 +110,85 @@ I need to learn how to use
 ---
 
 
+### how to get a file
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- (info)[http://php.net/manual/en/function.file-get-contents.php]
+
+This function grabs whatever content from the path you named. That is pretty much
+it, make sure you checked if the file exists.
+
+```
+
+<?php
+$text = '<?php
+$s = "something";
+?>
+<div> hello world </div>
+ <p> this is some text</p>
+ <h1> something </h1>';
+
+$php =getcwd()."/files/test.php";
+
+// check if the file even exists
+if(file_exists($php)){
+  $test = file_get_contents($php);// if it does then it will retreive contents of the file
+
+}else{
+
+  $test =  $text; //this will just add some example code into $test
+
+}
+?>
+<pre>
+<?php echo htmlspecialchars($test)?>
+</pre>
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### file_exists
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [php.net](http://php.net/manual/en/function.file-exists.php)
+
+**Note:** This function is simple and easily understandable. If you are false reports
+that your file does not exist, then it must mean that your directory path to the
+file is not accurate. So just make sure that is if you are getting an error
+
+```php
+$path = $_SERVER["DOCUMENT_ROOT"];
+
+$file = $path."/404.php";
+
+if(file_exists($file)){
+  echo "yes it does exist";
+}else{
+
+  echo "no it doesn't";
+}
+
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 ### how to create a file
 
@@ -116,7 +199,7 @@ View Content
 
 - [touch](http://php.net/manual/en/function.touch.php)
 
-**My Definition:**This is exactly the same as linux touch command, you are just doing
+**My Definition:** This is exactly the same as linux touch command, you are just doing
 it in PHP
 
 ```php
