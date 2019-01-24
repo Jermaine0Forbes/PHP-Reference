@@ -10,15 +10,64 @@ These are the essential functions I need to learn how to use
 
 ## Files
 - [create a file][put-contents]
+- [move_uploaded_file][mu-file]
 
 ## Other
 - [unset][unset]
 
+[mu-file]:#move_uploaded_file
 [unset]:#unset
 [home]:#php-functions
 [chown]:#chown
 [chmod]:#chmod
 [put-contents]:#file_put_contents
+
+### move_uploaded_file
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [php](http://php.net/manual/en/function.move-uploaded-file.php)
+
+```php
+define("file" , $_FILES);
+define("post" , $_POST);
+
+function _p($text){
+  echo "<p>$text </p>";
+}
+
+$file = (isset($_FILES["file"]) !=null)?file["file"]:null;
+$size = (isset(post["size"]) !=null)? post["size"]:null;
+
+// if the submit button was not pressed then the code will not run
+if(isset(post["submit"])){
+
+
+  if($file["name"]){
+    // this will spit out the name of file, example: dog.jpg
+    $fileName = $file["name"];
+
+    // this return a weird code that is needed to use the move_uploaded_file function
+    $tmpName = $file["tmp_name"];
+
+    //the destination that I want the image/file to be placed
+    $destination = getcwd()."/files".DIRECTORY_SEPARATOR.$fileName ;
+
+    // you have to use the tmp_name in order for you to upload a file
+    $moved = move_uploaded_file($tmpName, $destination);
+  }
+
+}
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### unset
 
