@@ -31,7 +31,7 @@ I need to learn how to use
 - [empty][empty]
 - [var_dump][var-dump]
 - [define][define]
-- [how to use define][define]
+
 
 ## Filesystem
 - [how to write data to a file][put-contents]
@@ -53,10 +53,12 @@ I need to learn how to use
 ## Regular Expressions
 - [preg_match][]
 
-## Validate Forms
+## Security
 - [filter_validate_email][filter-validate-email]
 - [filter_validate_int][filter-validate-int]
 - [filter_validate_float][filter-validate-float]
+- [password hashing][pass-hash]
+- [password verifying][pass-verify]
 
 ## Libraries
 
@@ -77,6 +79,8 @@ I need to learn how to use
 - [php hashing passwords]
 - [how to use traits]
 
+[pass-verify]:#password-verifying
+[pass-hash]:#password-hashing
 [upload-file]:#how-to-upload-a-file
 [get-contents]:#how-to-get-a-file
 [file-exists]:#file_exists
@@ -110,6 +114,228 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### password verifying
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [php.net](http://php.net/manual/en/function.password-verify.php)
+
+**syntax**
+```
+password_verify ( string $password , string $hash ) : bool
+```
+
+**ajax.php**
+```php
+$_REQUEST = json_decode(file_get_contents("php://input"),true);
+// $req = $_REQUEST;
+define("req",$_REQUEST);
+
+// $json = json_encode(req);
+
+if(isset(req["username"])){
+
+  $sql = new mysqli("localhost","jermaine","yurizan8","Testing");
+
+  if($sql->connect_error){
+    die($sql->connect_error);
+  }
+
+
+    $pass = req["password"];
+    $user = req['username'];
+    $db_pass ="";
+
+
+
+  $query = "select password from passwords where username = ? ";
+  $state = $sql->prepare($query);
+  $state->bind_param("s",$user);
+  $success = $state->execute();
+  $state->bind_result($p);
+
+
+
+  if($success){
+
+      while($state->fetch()){
+        $db_pass = $p;
+      }
+
+     $match = password_verify($pass, $db_pass);
+
+     if($match){
+       $json = json_encode([ "status" => "<span style='color:green; font-weight:bold;'>Your user is in the database : $match </span>"]);
+     }else{
+       $json = json_encode([ "status" => "<span style='color:red; font-weight:bold;'>Your password does not match</span>"]);
+     }
+
+
+
+  }else{
+
+    $json = json_encode([ "status" => "<span style='color:red; font-weight:bold;'>Your username does not match</span>"]);
+  }
+
+
+}else{
+  $json = json_encode([ "status" => "<span style='color:red; font-weight:bold;'>Please enter a  username</span>"]);
+}
+
+
+echo $json;
+```
+**index.php**
+```html
+<main>
+  <h2>Checking Password</h2>
+  <div class="check-form">
+    <div class="form-group row">
+      <label for="">Username</label>
+      <input class="form-control col-md-4 ml-4" type="text" name="username-check" >
+    </div>
+    <div class="form-group row">
+      <label for="">Password</label>
+      <input class="form-control col-md-4 ml-4" type="password" name="password-check" >
+    </div>
+    <button id="check-btn" type="button" name="button">Validate</button>
+  </div>
+
+  <p id="result"></p>
+
+  </section>
+</main>
+
+<script type="text/javascript">
+(function(){
+
+const btn = document.querySelector("#check-btn");
+
+let result = document.getElementById("result"),
+username, password,use,pass, data, url;
+
+btn.onclick = function(){
+username = document.querySelector("input[name='username-check']");
+password = document.querySelector("input[name='password-check']");
+url = "views/ajax.php";
+// url = "practice.php";
+
+use = username.value;
+pass = password.value;
+data = {username: use, password:pass};
+
+// console.log(pass);
+// console.log(data);
+fetch(url,{
+ method: "POST",
+ body: JSON.stringify(data),
+ headers:{"Content-Type": "application/json", 'Accept': 'application/json'}
+})
+.then(response => response.json())
+.then(res =>{
+ // console.log(res)
+ result.innerHTML = res.status;
+})
+.catch(err =>{
+ console.log("error: "+err)
+})
+
+}//btn.onclick
+
+
+
+})()
+</script>
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### password hashing
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [password_hash](http://php.net/manual/en/function.password-hash.php)
+
+**My Definition:** it encrypts a password silly. Make sure you have the second parameter
+as `PASSWORD_DEFAULT`
+
+```php
+function is_empty($val){
+   $result = (isset(post[$val]) && post[$val] != "")? true:false;
+   return $result;
+}
+
+function check_all($arr){
+   foreach($arr as $key){
+     $checked = is_empty($key);
+     if(!$checked){
+       break;
+     }
+   }
+
+   return $checked;
+}
+
+$submitted = isset(post["submit"]);
+
+if($submitted){
+
+
+  if(check_all(["username","password"])){
+    $sql = new mysqli("localhost","username", "password","database");
+
+    $u = post["username"];
+    $p = password_hash(post["password"], PASSWORD_DEFAULT);//hashes the password
+
+
+    if($sql->connect_error){
+      die($sql->connect_error);
+    }
+
+    $query =  "insert into passwords (password,username) values (?,?)";
+
+    $state = $sql->prepare($query);
+    $state->bind_param("ss",$p,$u);
+    $success = $state->execute();
+
+    if($success){
+      _p("your username: $u, has been saved");
+    }else{
+      echo "something went wrong";
+    }
+
+    $state->close();
+
+  }else{
+
+    echo "something has not been filled";
+  }
+
+
+
+
+
+}//submitted
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to upload a file
 

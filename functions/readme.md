@@ -4,6 +4,11 @@ These are the essential functions I need to learn how to use
 
 ## MSQLI
 
+
+## Passwords
+- [password_hash][pass-hash]
+- [password_verify][pass-verify]
+
 ## Permissions
 - [chown][chown]
 - [chmod][chmod]
@@ -15,12 +20,60 @@ These are the essential functions I need to learn how to use
 ## Other
 - [unset][unset]
 
+[pass-verify]:#password_verify
+[pass-hash]:#password_hash
 [mu-file]:#move_uploaded_file
 [unset]:#unset
 [home]:#php-functions
 [chown]:#chown
 [chmod]:#chmod
 [put-contents]:#file_put_contents
+
+
+### password_verify
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [php.net](http://php.net/manual/en/function.password-verify.php)
+
+**syntax**
+```
+password_verify ( string $password , string $hash ) : bool
+```
+
+```php
+$match = password_verify($pass, $db_pass);
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### password_hash
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+-[password_hash](http://php.net/manual/en/function.password-hash.php)
+
+```php
+  // make sure you add the second paremeter or you will get an error message
+  $p = password_hash(post["password"], PASSWORD_DEFAULT);
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### move_uploaded_file
 
