@@ -8,6 +8,7 @@
 - how to do facebook authentication
 - how to upload a file with a progress bar
 - how to create an ajax search result bar
+- how to insert,update,and delete records with PDO
 
 ## 1/23/19
 - create faker data generator
