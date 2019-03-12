@@ -41,7 +41,10 @@ I need to learn how to use
 - [how to upload a file][upload-file]
 
 ## MySQLi
+
 - [how to query a database][query-data]
+- [how to update multiple rows][update-rows]
+
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -79,6 +82,7 @@ I need to learn how to use
 - [php hashing passwords]
 - [how to use traits]
 
+[update-rows]:#how-update-multiple-rows
 [pass-verify]:#password-verifying
 [pass-hash]:#password-hashing
 [upload-file]:#how-to-upload-a-file
@@ -114,6 +118,46 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to update multiple rows
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [stackoverflow](https://stackoverflow.com/questions/18929978/how-to-update-multiple-rows-in-php)
+
+```php
+
+$submit = isset(post["edit-submit"]);
+
+if($submit){
+
+  $sql = new mysqli("localhost","username","password","Testing");
+
+  $users = post["username"];
+  $ids = post["id"];
+  $pwds = post["password"];
+  $count = count($users);
+
+  for($x=0; $x < $count; $x++){
+    $query = "update passwords set username='$users[$x]', password='$pwds[$x]' where id=$ids[$x]; \n\n";
+    $result = $sql->query($query);
+  }
+
+  if($result){
+    _p("records have been updated");// this just puts the text into a paragraph
+  }
+}
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 ### password verifying
 
