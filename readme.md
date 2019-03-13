@@ -17,6 +17,9 @@ I need to learn how to use
 - [explode][explode]
 
 
+## Classes
+- [how to autoload classes]
+
 ## Date Functions
 - [date][date]
 - [date_create][date-create]
@@ -39,6 +42,7 @@ I need to learn how to use
 - [check if file exists][file-exists]
 - [how to get a file][get-contents]
 - [how to upload a file][upload-file]
+- [how to create a cvs file][csv-file]
 
 ## MySQLi
 
@@ -76,12 +80,11 @@ I need to learn how to use
 
 ## Suggestions
 - [best security practices]
-- [how to autoload classes]
 - [how to use .htaccess files]
 - [how to create a layout file]
-- [php hashing passwords]
 - [how to use traits]
 
+[csv-file]:#how-to-create-a-csv-file
 [update-rows]:#how-update-multiple-rows
 [pass-verify]:#password-verifying
 [pass-hash]:#password-hashing
@@ -118,6 +121,108 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+### how to create a csv file
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [w3schools](https://www.w3schools.com/php/func_filesystem_fputcsv.asp)
+- [stackoverflow](https://stackoverflow.com/questions/4165195/mysql-query-to-get-column-names)
+
+The main functions you need to worry about is **fopen**, **fputcsv**, and **fclose**
+. You also need to get the through mysqli queries. And grabbing the columns from
+the query is important.
+
+```php
+
+
+/*********************************
+  GRAB COLUMNS AND ADD TO AN ARRAY
+**********************************/
+
+$column = []; $rows = [];
+
+// This includes the mysqli
+include("components/testing-db.php");
+
+$query = "SHOW COLUMNS FROM passwords";
+$result = $sql->query($query);
+if($result){
+  while($row = $result->fetch_assoc()){
+      $column[] = $row['Field'];
+  }
+
+
+
+}
+
+/*********************************
+  GRAB VALUES AND ADD TO AN ARRAY
+*********************************/
+
+if($result){
+
+  $query = "SELECT * FROM passwords";
+
+  $stmt = $sql->prepare($query);
+  $stmt->bind_result($id, $us, $pa);
+  $rs = $stmt->execute();
+
+  if($rs){
+    while($stmt->fetch()){
+      $rows[] = [$id,$us,$pa];
+    }
+  }
+
+  $sql->close();
+
+}
+
+
+
+/**********************
+  CREATE THE CSV FILE
+**********************/
+$file = "passwords.csv";
+
+$csv = fopen($file,"w");
+
+fputcsv($csv, $column);
+
+foreach ($rows as $key ) {
+  fputcsv($csv, $key);
+}
+
+$response = fclose($csv);
+
+/*****************************
+  MOVE THE FILE TO CVS FOLDER
+******************************/
+
+if($response){
+
+  chmod($file,0775);
+  $status = rename($file,"./files/csv/$file");
+  if($status){
+
+    echo "csv has been created";
+  }else{
+    echo "csv has not been moved and is now deleted";
+    unlink($file);
+  }
+}
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to update multiple rows
 

@@ -255,12 +255,13 @@ View Content
 <summary>
 With Functions
 </summary>
+
 ```php
 
  <?php
 
  // connects php to mysql
- $conn = mysqli_connect("localhost","jermaine","yurizan8","Testing");
+ $conn = mysqli_connect("localhost","username","password","Testing");
 
 
  // checks if there is a connection error
