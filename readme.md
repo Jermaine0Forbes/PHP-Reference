@@ -1744,26 +1744,6 @@ View Content
   </details>
 
 
-  <details>
-  <summary>
-  FILTER_SANITIZE_EMAIL
-  </summary>
-
-  ```php
-  <?php
-
-  $str = "<h2> hello </h2> ";
-
-  $filter  = filter_var($str, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-  var_dump($filter); //string(29) "<h2> hello </h2> "
-
-
-   ?>
-  ```
-
-  </details>
-
 
   <details>
   <summary>
