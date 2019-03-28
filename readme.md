@@ -43,6 +43,7 @@ I need to learn how to use
 - [how to get a file][get-contents]
 - [how to upload a file][upload-file]
 - [how to create a cvs file][csv-file]
+- [how to get csv data][get-csv]
 
 ## MySQLi
 
