@@ -1,5 +1,13 @@
 # Logs
 
+## 3/28/19
+- learn how to download a file
+- learn how to do a bulk insert with csv
+- learn how to send emails
+- fopen
+- fclose
+- feof
+
 ## 2/27/19
 - how to updated multiple records
 - how to delete multiple records

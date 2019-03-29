@@ -19,6 +19,7 @@ I need to learn how to use
 
 ## Classes
 - [how to autoload classes]
+- [how to use traits]
 
 ## Date Functions
 - [date][date]
@@ -49,6 +50,7 @@ I need to learn how to use
 
 - [how to query a database][query-data]
 - [how to update multiple rows][update-rows]
+- [how to insert data][insert-data]
 
 
 ## Sanitize Forms
@@ -83,8 +85,9 @@ I need to learn how to use
 - [best security practices]
 - [how to use .htaccess files]
 - [how to create a layout file]
-- [how to use traits]
 
+[insert-data]:#how-to-insert-data
+[get-csv]:#how-to-get-csv-data
 [csv-file]:#how-to-create-a-csv-file
 [update-rows]:#how-update-multiple-rows
 [pass-verify]:#password-verifying
@@ -123,6 +126,56 @@ I need to learn how to use
 
 ---
 
+
+### how to insert data
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [w3schools](https://www.w3schools.com/php/php_mysql_insert.asp)
+
+```
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### how to get csv data
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [w3schools](https://www.w3schools.com/php/func_filesystem_fgetcsv.asp)
+
+```php
+//retreives the csv file data and assign it the file variable
+$file = fopen("contacts.csv","r");
+
+//this will loop until it reaches the end of file
+while(! feof($file))
+  {
+    //this will dump an array of each row
+  print_r(fgetcsv($file));
+  }
+
+//this will close the connection of the file
+fclose($file);
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to create a csv file
 
