@@ -51,6 +51,8 @@ I need to learn how to use
 - [how to query a database][query-data]
 - [how to update multiple rows][update-rows]
 - [how to insert data][insert-data]
+- [how to update data][update-data]
+- [how to delete data][delete-data]
 
 
 ## Sanitize Forms
@@ -86,6 +88,8 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+[delete-data]:#how-to-delete-data
+[update-data]:#how-to-update-data
 [insert-data]:#how-to-insert-data
 [get-csv]:#how-to-get-csv-data
 [csv-file]:#how-to-create-a-csv-file
@@ -127,6 +131,181 @@ I need to learn how to use
 ---
 
 
+### how to delete data
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### With the mysqli class
+
+```php
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if($submitted){
+
+  $mysql = new mysqli("localhost","username","password","Testing");
+
+  $id = req["id"];
+
+  if( $mysql->connect_error){
+    die($mysql->connect_error);
+  }
+
+$query= "DELETE FROM  passwords  WHERE id=?" ;
+
+  $state = $mysql->prepare($query);
+  $state->bind_param("i",$id);
+  $result = $state->execute();
+
+
+  if($result){
+    echo "data has been deleted";
+  }else{
+
+    echo "something went wrong";
+  }
+
+  $state->close();
+
+}
+
+```
+
+#### With the mysqli functions
+
+```php
+
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if($submitted){
+
+  $conn = mysqli_connect("localhost","username","password","Testing");
+
+  $id = req["id"];
+
+  if (mysqli_connect_errno())
+    {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+
+  $result = mysqli_query($conn,"DELETE FROM  passwords  WHERE id=$id");
+
+  if($result){
+    echo mysqli_affected_rows($conn)." rows have been deleted";
+  }else{
+
+    echo "something went wrong";
+  }
+
+  mysqli_close($conn);
+
+}
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### how to update data
+
+<details>
+<summary>
+View Content
+</summary>
+**reference**
+- [mysqli_query](https://www.w3schools.com/php/func_mysqli_query.asp)
+
+#### With the mysqli class
+
+```php
+
+define("req" , $_REQUEST);
+
+$submitted = isset(req["submit"]);
+
+if($submitted){
+
+  $mysql = new mysqli("localhost","username","password","Testing");
+
+  $id = req["id"];
+  $user = $mysql->escape_string(req["username"]);
+
+  if( $mysql->connect_error){
+    die($mysql->connect_error);
+  }
+
+$query= "UPDATE  passwords SET username=?  WHERE id=?" ;
+
+  $state = $mysql->prepare($query);
+  $state->bind_param("si",$user,$id);
+  $result = $state->execute();
+
+
+  if($result){
+    echo "data has been saved";
+  }else{
+
+    echo "something went wrong";
+  }
+
+  $state->close();
+
+}
+
+
+```
+
+
+#### With the mysqli functions
+
+```php
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if($submitted){
+
+
+
+
+  $conn = mysqli_connect("localhost","username","password","Testing");
+
+  $id = req["id"];
+  $user = mysqli_real_escape_string($conn,req["username"]);
+
+  if (mysqli_connect_errno())
+    {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+
+
+  $result = mysqli_query($conn, "UPDATE  passwords SET username='$user'  WHERE id=$id") ;
+
+
+  if($result){
+    echo "data has been saved";
+  }else{
+
+    echo "something went wrong";
+  }
+
+  mysqli_close($conn);
+
+}
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
 ### how to insert data
 
 <details>
@@ -136,10 +315,84 @@ View Content
 
 **reference**
 - [w3schools](https://www.w3schools.com/php/php_mysql_insert.asp)
+- [mysqli_query](https://www.w3schools.com/php/func_mysqli_query.asp)
+
+#### With the mysqli class
+
+```php
+
+define("req" , $_REQUEST);
+
+$submitted = isset(req["submit"]);
+
+if($submitted){
+
+  $user = req["username"];
+  $pass = password_hash(req["password"], PASSWORD_DEFAULT);
+  $email = req["email"];
+
+  $mysql = new mysqli("localhost","username","password","Testing");
+
+  if( $mysql->connect_error){
+    die($mysql->connect_error);
+  }
+
+  $query = "INSERT INTO passwords (username,password,email) values (?,?,?)";
+
+  $state = $mysql->prepare($query); // prepares the statement
+  $state->bind_param("sss", $user, $pass,$email);// this binds variables into the ? values from the query
+  $result = $state->execute();//executes the statement and returns a bool value
+
+  if($result){
+    echo "data has been saved";
+  }else{
+
+    echo "something went wrong";
+  }
+
+  $state->close();
+
+}
+```
+
+#### With the mysqli functions
+
+```php
+
+$submitted = isset(req["submit"]);
+
+if($submitted){
+
+  $user = req["username"];
+  $pass = password_hash(req["password"], PASSWORD_DEFAULT);
+  $email = req["email"];
+
+  $conn = mysqli_connect("localhost","username","password","Testing");
+
+  if (mysqli_connect_errno())
+    {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+
+    // returns a bool value if the query was executed successfully, also make sure you add quotes on the values or /**
+   // it will not work
+  $result = mysqli_query($conn, "INSERT INTO passwords (username,password,email) VALUES ('$user','$pass','$email')") ;
+
+
+  if($result){
+    echo "data has been saved";
+  }else{
+
+    echo "something went wrong";
+  }
+
+  mysqli_close($conn);
+
+}
+
 
 ```
 
-```
 
 </details>
 
