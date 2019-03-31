@@ -48,12 +48,19 @@ I need to learn how to use
 
 ## MySQLi
 
-- [how to query a database][query-data]
-- [how to update multiple rows][update-rows]
+- [how to read data][query-data]
 - [how to insert data][insert-data]
 - [how to update data][update-data]
 - [how to delete data][delete-data]
+- [how to read data][read-data]
+- [how to update multiple rows][update-rows]
 
+## PDO
+
+- [how to insert data][pdo-insert]
+- [how to read data][pdo-read]
+- [how to update data][pdo-update]
+- [how to delete data][pdo-delete]
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -69,7 +76,7 @@ I need to learn how to use
 - [filter_validate_email][filter-validate-email]
 - [filter_validate_int][filter-validate-int]
 - [filter_validate_float][filter-validate-float]
-- [password hashing][pass-hash]
+- [how to hash a password][pass-hash]
 - [password verifying][pass-verify]
 
 ## Libraries
@@ -88,6 +95,10 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+[pdo-delete]:#how-to-delete-pdo-data
+[pdo-update]:#how-to-update-pdo-data
+[pdo-insert]:#how-to-insert-pdo-data
+[pdo-read]:#how-to-read-pdo-data
 [delete-data]:#how-to-delete-data
 [update-data]:#how-to-update-data
 [insert-data]:#how-to-insert-data
@@ -129,6 +140,253 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to delete PDO data
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $id = req["id"];
+
+  $query = "DELETE FROM passwords WHERE id=:id  ";
+  $state = $db->prepare($query);
+  $state->bindValue(":id", $id);
+  $result = $state->execute();
+
+  if($result){
+    echo $state->rowCount()." rows have been deleted";
+  }else{
+    $err = $state->errorInfo();
+    echo "something went wrong : $err[2]";
+  }
+
+  $state->closeCursor();
+
+
+}
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### how to update PDO data
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $user = req["username"];
+  $email = req["email"];
+  $id = req["id"];
+
+  $query = "UPDATE passwords SET username=:user , email=:mail WHERE id=:id  ";
+  $state = $db->prepare($query);
+  $state->bindValue(":id", $id);
+  $state->bindValue(":user", $user);
+  $state->bindValue(":mail", $email);
+  $result = $state->execute();
+
+  if($result){
+    echo "data has been saved";
+  }else{
+    $err = $state->errorInfo();
+    echo "something went wrong : $err[2]";
+  }
+
+  $state->closeCursor();
+
+
+}
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+
+### how to insert PDO data
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### One way
+
+```php
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $user = req["username"];
+  $pass = password_hash(req["password"], PASSWORD_DEFAULT);
+  $email = req["email"];
+  $amount = req["amount"];
+
+  $query = "INSERT INTO  passwords (username, password, email, amount) VALUES (:user, :pass, :email, :amount)  ";
+  $state = $db->prepare($query);
+  $state->bindValue(":user", $user);
+  $state->bindValue(":pass", $pass);
+  $state->bindValue(":email", $email);
+  $state->bindValue(":amount", $amount);
+  $result = $state->execute();
+
+  if($result){
+    echo "data has been saved";
+  }else{
+    $err = $state->errorInfo();
+    echo "something went wrong : $err[2]";
+  }
+
+  $state->closeCursor();
+
+
+}
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+
+### how to read PDO data
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### Best Way
+
+```php
+$rows = "";
+
+
+try {
+
+  $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+} catch (PDOException $e) {
+  $message = $e->getMessage();
+
+  _p($message);
+}
+
+$query = "SELECT id,username, email FROM passwords  ";
+$state = $db->prepare($query);
+$state->execute();
+$state->bindColumn("id", $id);
+$state->bindColumn("username", $user);
+$state->bindColumn("email", $email);
+
+while($state->fetch(PDO::FETCH_BOUND)){
+
+    $rows .="
+    <tr>
+      <td>$id</td>
+      <td>$user</td>
+      <td>$email</td>
+    </tr>
+    ";
+}
+$state->closeCursor();
+
+```
+
+#### 2nd Way
+
+```php
+try {
+
+  $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+} catch (PDOException $e) {
+  $message = $e->getMessage();
+
+  _p($message);
+}
+
+$query = "SELECT id,username, email FROM passwords  ";
+$state = $db->prepare($query);
+$state->execute();
+$data= $state->fetchAll();
+$state->closeCursor();
+
+foreach ($data as $key => $value) {
+
+  $id = $value["id"];
+  $user = $value["username"];
+  $email = $value["email"];
+
+  $rows .="
+  <tr>
+    <td>$id</td>
+    <td>$user</td>
+    <td>$email</td>
+  </tr>
+  ";
+
+}
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 
 ### how to delete data
@@ -1921,9 +2179,60 @@ var_dump($a);//string(33) " fish *---- dog *---- cat"
 View Content
 </summary>
 
+**reference**
+
+- [mysqli_fetch_assoc](https://www.php.net/manual/en/mysqli-result.fetch-assoc.php)
+
+
+#### Best way with mysqli class
+
+```php
+$rows = "";
+
+
+  $mysql = new mysqli("localhost","username","password","Testing");
+
+  if( $mysql->connect_error){
+    die($mysql->connect_error);
+  }
+
+
+  $query = "SELECT * FROM passwords";
+
+  $state = $mysql->prepare($query);
+  $state->bind_result($id, $user, $pass, $email,$amount);
+  $result = $state->execute();
+
+
+
+
+  if($result){
+
+    while( $state->fetch()){
+
+      $rows .="
+        <tr>
+        <td>$id</td>
+        <td>$user</td>
+        <td>$email</td>
+        <td>$amount</td>
+        </tr>
+      ";
+
+    }
+  }else{
+
+    echo "something went wrong";
+  }
+
+    $state->close();
+```
+
+#### Alternative way with mysqli class
+
 ```php
 
-$sql = new mysqli("localhost","jermaine","yurizan8","Testing");
+$sql = new mysqli("localhost","username","password","Testing");
 if($sql->connect_errno){
     echo "Big Error: ".$sql->connect_error;
 }
@@ -1931,34 +2240,78 @@ if($sql->connect_errno){
 $query = "select * from animals";
 $result = $sql->query($query)
 
+     if($result){
 
+       while($row = $result->fetch_assoc()){
+           $id = $row["id"];
+           $animal = $row["animal"];
+           $sex = $row["sex"];
+           $farm = $row["farmer_id"];
+           $create = $row["created_at"];
+           $update = $row["updated_at"];
 
-             if($result){
-
-               while($row = $result->fetch_assoc()){
-                   $id = $row["id"];
-                   $animal = $row["animal"];
-                   $sex = $row["sex"];
-                   $farm = $row["farmer_id"];
-                   $create = $row["created_at"];
-                   $update = $row["updated_at"];
-
-                     echo "<div><h3>$id: $animal</h3>
-                     <ul>
-                     <li>sex: $sex</li>
-                     <li>farm id: $farm</li>
-                     <li>born: $create</li>
-                     <li>current date: $update</li>
-                     </ul></div>";
-                 }
-
+             echo "<div><h3>$id: $animal</h3>
+             <ul>
+             <li>sex: $sex</li>
+             <li>farm id: $farm</li>
+             <li>born: $create</li>
+             <li>current date: $update</li>
+             </ul></div>";
          }
 
-
-         $result->free();
-         $sql->close();
+ }
 
 
+ $result->free();
+ $sql->close();
+
+```
+
+#### With mysqli functions
+
+```php
+
+$rows = "";
+
+
+  $conn= mysqli_connect("localhost","username","password","Testing");
+
+  if (mysqli_connect_errno())
+    {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+
+  $query = "SELECT * FROM passwords";
+
+  $result = mysqli_query($conn, $query);
+
+
+  if($result){
+
+
+    while( $row = mysqli_fetch_assoc($result)){
+
+      $id = $row["id"];
+      $user = $row["username"];
+      $email = $row["email"];
+      $amount = $row["amount"];
+
+      $rows .="
+        <tr>
+        <td>$id</td>
+        <td>$user</td>
+        <td>$email</td>
+        <td>$amount</td>
+        </tr>
+      ";
+
+    }
+  }else{
+
+    echo "something went wrong";
+  }
+
+    mysqli_close($conn);
 
 ```
 
