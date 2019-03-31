@@ -52,7 +52,6 @@ I need to learn how to use
 - [how to insert data][insert-data]
 - [how to update data][update-data]
 - [how to delete data][delete-data]
-- [how to read data][read-data]
 - [how to update multiple rows][update-rows]
 
 ## PDO
