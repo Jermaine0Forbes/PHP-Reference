@@ -53,6 +53,8 @@ I need to learn how to use
 - [how to update data][update-data]
 - [how to delete data][delete-data]
 - [how to update multiple rows][update-rows]
+- [how to insert multiple rows][create-rows]
+- [how to delete multiple rows][delete-rows]
 
 ## PDO
 
@@ -60,6 +62,9 @@ I need to learn how to use
 - [how to read data][pdo-read]
 - [how to update data][pdo-update]
 - [how to delete data][pdo-delete]
+- [how to insert multiple rows][pdo-insert-x]
+- [how to update multiple rows][pdo-update-x]
+- [how to delete multiple rows][pdo-delete-x]
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -93,7 +98,11 @@ I need to learn how to use
 - [best security practices]
 - [how to use .htaccess files]
 - [how to create a layout file]
-
+[delete-rows]:#how-to-delete-multiple-rows
+[create-rows]:#how-to-insert-multiple-rows
+[pdo-delete-x]:#how-to-delete-multiple-rows-in-pdo
+[pdo-update-x]:#how-to-update-multiple-rows-in-pdo
+[pdo-insert-x]:#how-to-insert-multiple-rows-in-pdo
 [pdo-delete]:#how-to-delete-pdo-data
 [pdo-update]:#how-to-update-pdo-data
 [pdo-insert]:#how-to-insert-pdo-data
@@ -139,6 +148,652 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+
+### how to insert multiple rows
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### With the prepared method
+
+```php
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  $mysql = new mysqli("localhost","username","password","Testing");
+
+ if( $mysql->connect_error){
+   die($mysql->connect_error);
+ }
+  $user = req["username"];
+  $pass = req["password"];
+  $email = req["email"];
+  $amount = req["amount"];
+  $count = count(req["username"]);
+  $result = false;
+  $results = 0;
+
+
+
+  for ($i=0; $i < $count ; $i++) {
+    $u = $mysql->real_escape_string($user[$i]);
+    $p = password_hash($mysql->real_escape_string($pass[$i]), PASSWORD_DEFAULT);
+    $e = $mysql->real_escape_string($email[$i]);
+    $a = $amount[$i];
+
+    $query = "INSERT INTO passwords (username,password,email,amount)  VALUES (?,?,?,?)";
+    $stmt = $mysql->prepare($query);
+    $stmt->bind_param("sssi",$u,$p,$e,$a);
+    $result = $stmt->execute();
+
+    if($result){
+      $results++;
+    }
+
+  }
+
+
+  if($result){
+    echo $results." rows have been inserted";
+  }else{
+    echo "something went wrong: $db->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+```
+
+#### With the mysqli functions
+
+```php
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  $conn = mysqli_connect("localhost","username","password","Testing");
+
+ if (mysqli_connect_errno())
+   {
+   echo "Failed to connect to MySQL: " . mysqli_connect_error();
+   }
+
+  $user = req["username"];
+  $pass = req["password"];
+  $email = req["email"];
+  $amount = req["amount"];
+  $count = count(req["username"]);
+  $rowValues = [];
+  $result = false;
+
+
+
+  for ($i=0; $i < $count ; $i++) {
+    $u = mysqli_real_escape_string($conn, $user[$i]);
+    $p = password_hash(mysqli_real_escape_string($conn,$pass[$i]), PASSWORD_DEFAULT);
+    $e = mysqli_real_escape_string($conn,$email[$i]);
+    $a = $amount[$i];
+    $rowValues[] = "('$u','$p','$e',$a)";
+
+  }
+
+  $query = "INSERT INTO passwords (username,password,email,amount)  VALUES ".implode(",",$rowValues);
+  $result = mysqli_query($conn,$query);
+
+
+
+
+
+  if($result){
+    echo $count." rows have been inserted";
+  }else{
+    echo "something went wrong: ".mysqli_error($conn);
+  }
+
+  mysqli_close($conn);
+
+
+
+
+}//submitted
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+### how to delete multiple rows
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### With the prepare method
+
+```php
+
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  $mysql= new mysqli("localhost","username","password","Testing");
+
+ if ($mysql->connect_errno)
+   {
+   echo "Failed to connect to MySQL: " . $mysql->connect_error;
+   }
+
+  $id = req["id"];
+  $count = count(req["id"]);
+  $result = false;
+
+
+
+  for ($i=0; $i < $count ; $i++) {
+    $id_ = $mysql->escape_string($id[$i]);
+
+    $query = "DELETE FROM passwords WHERE id =?";
+    $stmt = $mysql->prepare($query);
+    $stmt->bind_param("i",$id_);
+    $result = $stmt->execute();
+
+  }
+
+
+  if($result){
+    echo $count." rows have been deleted";
+    // echo $count." rows have been updated";
+  }else{
+    echo "something went wrong: ".$stmt->error;
+  }
+
+$stmt->close();
+
+
+
+
+}//submitted
+```
+
+
+#### With the mysqli functions
+
+```php
+
+
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  $conn= mysqli_connect("localhost","username","password","Testing");
+
+ if (mysqli_connect_errno())
+   {
+   echo "Failed to connect to MySQL: " . mysqli_connect_error();
+   }
+
+  $id = req["id"];
+  $count = count(req["id"]);
+  $result = false;
+
+
+
+  for ($i=0; $i < $count ; $i++) {
+    $id_ = mysqli_real_escape_string($conn, $id[$i]);
+
+    $query = "DELETE FROM passwords WHERE id =$id_";
+    $result = mysqli_query($conn,$query);
+
+  }
+
+
+  if($result){
+    echo $count." rows have been deleted";
+  }else{
+    echo "something went wrong: ".mysqli_error();
+  }
+
+mysqli_close($conn);
+
+
+
+
+}//submitted
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### how to delete multiple rows in PDO
+
+<details>
+<summary>
+View Content
+</summary>
+
+
+#### With the prepare method
+
+```php
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $id = req["id"];
+  $result = false;
+  $results = 0;
+
+
+
+  for ($i=0; $i < count($id) ; $i++) {
+    $query = "DELETE FROM passwords  WHERE id=:id ";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":id",$id[$i]);
+    $result = $stmt->execute();
+
+    if($result){
+      $results++;
+    }
+
+  }
+
+
+  if($result){
+    echo $results." rows have been deleted";
+  }else{
+    echo "something went wrong: $stmt->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+
+```
+
+
+#### With the exec method
+
+```php
+
+
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $id = req["id"];
+  $result = false;
+  $results = 0;
+
+
+
+  for ($i=0; $i < count($id) ; $i++) {
+    $query = "DELETE FROM passwords  WHERE id=$id[$i] ";
+    $result = $db->exec($query);
+
+    if($result){
+      $results++;
+    }
+
+  }
+
+
+  if($result){
+    echo $results." rows have been deleted";
+  }else{
+    echo "something went wrong: $db->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
+
+### how to update multiple rows in PDO
+
+<details>
+<summary>
+View Content
+</summary>
+
+
+#### With the prepare method
+
+```php
+define("req" , $_REQUEST);
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $id = req["id"];
+  $user = req["username"];
+  $email = req["email"];
+  $result = false;
+  $results = 0;
+
+
+
+  for ($i=0; $i < count($user) ; $i++) {
+    $query = "UPDATE passwords SET username=:user , email=:email WHERE id=:id ";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(":user",$user[$i]);
+    $stmt->bindValue(":email",$email[$i]);
+    $stmt->bindValue(":id",$id[$i]);
+    $result = $stmt->execute();
+
+    if($result){
+      $results++;
+    }
+
+  }
+
+
+  if($result){
+    echo $results." rows have been updated";
+  }else{
+    echo "something went wrong: $stmt->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+
+
+```
+
+
+#### With the exec method
+
+```php
+
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $id = req["id"];
+  $user = req["username"];
+  $email = req["email"];
+  $result = false;
+  $results = 0;
+
+
+
+  for ($i=0; $i < count($user) ; $i++) {
+    $id_ = $id[$i];
+    $u = $db->quote($user[$i]);
+    $e = $db->quote($email[$i]);
+    $query = "UPDATE passwords SET username=$u , email=$e WHERE id=$id_ ";
+    $result = $db->exec($query);
+
+    if($result){
+      $results++;
+    }
+
+  }
+
+
+  if($result){
+    echo $results." rows have been updated";
+  }else{
+    echo "something went wrong: $db->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+```
+
+</details>
+
+
+[go back :house:][home]
+
+### how to insert multiple rows in PDO
+
+<details>
+<summary>
+View Content
+</summary>
+
+#### With prepared statement
+
+```php
+
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $user = req["username"];
+  $pass = req["password"];
+  $email = req["email"];
+  $amount = req["amount"];
+  $result = false;
+
+
+
+
+  for ($i=0; $i < count($user) ; $i++) {
+
+    $query = "INSERT INTO passwords (username,password,email,amount) VALUES (:user,:pass,:mail,:amou)";
+    $state = $db->prepare($query);
+    $state->bindValue(":user", $user[$i]);
+    $state->bindValue(":pass", password_hash($pass[$i] , PASSWORD_DEFAULT));
+    $state->bindValue(":mail", $email[$i]);
+    $state->bindValue(":amou", $amount[$i]);
+    $result = $state->execute();
+
+    if(!$result){
+      break;
+    }
+  }
+
+
+  if($result){
+    echo $state->rowCount()." rows have been inserted";
+  }else{
+    $err = $state->errorInfo();
+    echo "something went wrong : $err[2]";
+  }
+
+  $state->closeCursor();
+
+
+}
+
+```
+
+#### With exec method
+
+```php
+
+$submitted = isset(req["submit"]);
+
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $user = req["username"];
+  $pass = req["password"];
+  $email = req["email"];
+  $amount = req["amount"];
+  $result = false;
+
+  for ($i=0; $i < count($user) ; $i++) {
+    $u = $db->quote($user[$i]);
+    $p = $db->quote(password_hash($pass[$i],PASSWORD_DEFAULT));
+    $e = $db->quote($email[$i]);
+    $a = $amount[$i];
+
+    $query = "INSERT INTO passwords (username,password,email,amount) VALUES ($u, $p,$e,$a)";
+     $result = $db->exec($query);
+
+     if(empty($result)){
+       break;
+     }
+  }
+
+
+
+  if($result){
+    echo $result." rows have been inserted";
+  }else{
+    echo "something went wrong: $db->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+```
+
+#### With the query method
+
+```php
+
+$submitted = isset(req["submit"]);
+define("req" , $_REQUEST);
+
+if ($submitted) {
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $user = req["username"];
+  $pass = req["password"];
+  $email = req["email"];
+  $amount = req["amount"];
+  $result = false;
+
+
+
+  for ($i=0; $i < count($user) ; $i++) {
+    $u = $db->quote($user[$i]);
+    $p = $db->quote(password_hash($pass[$i],PASSWORD_DEFAULT));
+    $e = $db->quote($email[$i]);
+    $a = $amount[$i];
+
+    $rowValues[] = "($u,$p ,$e ,$a)";
+  }
+
+
+    $query = "INSERT INTO passwords (username,password,email,amount) VALUES ".implode(",",$rowValues);
+    $result = $db->query($query);
+
+
+
+  if($result){
+    echo $result->rowCount()." rows have been inserted";
+  }else{
+    echo "something went wrong: $db->errorInfo()[2] ";
+  }
+
+
+
+
+}//submitted
+
+
+
+
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 ### how to delete PDO data
 
@@ -797,6 +1452,59 @@ View Content
 
 **reference**
 - [stackoverflow](https://stackoverflow.com/questions/18929978/how-to-update-multiple-rows-in-php)
+
+
+#### With the prepared method
+
+```php
+
+$submitted = isset(req["submit"]);
+
+if ($submitted) {
+
+  $mysql= new mysqli("localhost","username","password","Testing");
+
+ if ($mysql->connect_errno)
+   {
+   echo "Failed to connect to MySQL: " . $mysql->connect_error;
+   }
+
+  $id = req["id"];
+  $count = count(req["id"]);
+  $user = req["username"];
+  $email = req["email"];
+  $result = false;
+
+  for ($i=0; $i < $count ; $i++) {
+    $id_ = $mysql->escape_string( $id[$i]);
+    $u = $mysql->escape_string($user[$i]);
+    $e = $mysql->escape_string($email[$i]);
+
+    $query = "UPDATE passwords SET username=? , email=? WHERE id =?";
+    $stmt= $mysql->prepare($query);
+    $stmt->bind_param("ssi",$u,$e,$id_);
+    $result = $stmt->execute();
+
+  }
+
+
+  if($result){
+    // echo $count." rows have been deleted";
+    echo $count." rows have been updated";
+  }else{
+    echo "something went wrong: ".$stmt->error;
+  }
+
+$stmt->close();
+
+
+
+
+}//submitted
+
+```
+
+#### With the mysqli functions
 
 ```php
 
