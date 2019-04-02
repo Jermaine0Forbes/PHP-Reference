@@ -98,6 +98,7 @@ I need to learn how to use
 - [best security practices]
 - [how to use .htaccess files]
 - [how to create a layout file]
+
 [delete-rows]:#how-to-delete-multiple-rows
 [create-rows]:#how-to-insert-multiple-rows
 [pdo-delete-x]:#how-to-delete-multiple-rows-in-pdo
