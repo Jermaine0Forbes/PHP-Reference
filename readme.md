@@ -65,6 +65,7 @@ I need to learn how to use
 - [how to insert multiple rows][pdo-insert-x]
 - [how to update multiple rows][pdo-update-x]
 - [how to delete multiple rows][pdo-delete-x]
+- [how to get data with like statement][pdo-like]
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -99,6 +100,7 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+[pdo-like]:#how-to-get-data-with-like-statement
 [delete-rows]:#how-to-delete-multiple-rows
 [create-rows]:#how-to-insert-multiple-rows
 [pdo-delete-x]:#how-to-delete-multiple-rows-in-pdo
@@ -150,6 +152,92 @@ I need to learn how to use
 
 ---
 
+
+### how to get data with like statement
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [How do I create a PDO parameterized query with a LIKE statement?
+](https://stackoverflow.com/questions/583336/how-do-i-create-a-pdo-parameterized-query-with-a-like-statement)
+
+```php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$_REQUEST = json_decode(file_get_contents("php://input"),true);
+define("req",$_REQUEST);
+$rows = "something went wrong";
+
+
+if( isset(req["location"])){
+
+
+  try {
+
+    $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+  } catch (PDOException $e) {
+    $message = $e->getMessage();
+
+    _p($message);
+  }
+
+  $location = req["location"];
+  $rows = "<table class='table' style='max-width:960px;'> <tbody>";
+
+// using the concat function helps with like statement
+  $query = "SELECT name , state, city  FROM locate_peoples  WHERE state LIKE  concat('%', :loc, '%')  ";
+
+  $state = $db->prepare($query);
+  $state->bindValue(":loc", $location);
+  $result = $state->execute();
+  $state->bindColumn("name", $name);
+  $state->bindColumn("state", $st);
+  $state->bindColumn("city", $city);
+
+  if($result){
+    while($state->fetch(PDO::FETCH_BOUND)){
+
+    $rows .="
+    <tr>
+      <td>
+        $name
+      </td>
+      <td>
+        $st
+      </td>
+      <td>
+        $city
+      </td>
+    </tr>
+    ";
+}
+  $rows .= "</tbody></table>";
+   // echo "data has been saved";
+ }else{
+   $err = $state->errorInfo();
+   echo "something went wrong : $err[2]";
+ }
+
+ $state->closeCursor();
+
+
+
+}
+
+
+echo $rows;
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to insert multiple rows
 
