@@ -2,22 +2,13 @@
 
 These are the essential functions I need to learn how to use
 
-## MSQLI
-
-
-## Passwords
+- [chmod][chmod]
+- [chown][chown]
+- [file_put_contents][put-contents]
+- [fopen][fopen]
+- [move_uploaded_file][mu-file]
 - [password_hash][pass-hash]
 - [password_verify][pass-verify]
-
-## Permissions
-- [chown][chown]
-- [chmod][chmod]
-
-## Files
-- [create a file][put-contents]
-- [move_uploaded_file][mu-file]
-
-## Other
 - [unset][unset]
 
 [pass-verify]:#password_verify
@@ -28,6 +19,32 @@ These are the essential functions I need to learn how to use
 [chown]:#chown
 [chmod]:#chmod
 [put-contents]:#file_put_contents
+
+###
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [php.net](https://www.php.net/manual/en/function.fopen.php)
+
+**syntax**
+`fopen(filename,mode,include_path,context)`
+
+```php
+$file = "passwords.csv";
+
+// the first parameter is the filename
+// the second parameter creates a new file if it doesn't exist, but if it does it clears the content of the existing file
+$csv = fopen($file,"w");
+```
+
+</details>
+
+
+[go back :house:][home]
 
 
 ### password_verify
