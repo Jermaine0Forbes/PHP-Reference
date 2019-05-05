@@ -20,7 +20,7 @@ These are the essential functions I need to learn how to use
 [chmod]:#chmod
 [put-contents]:#file_put_contents
 
-###
+### fopen
 
 <details>
 <summary>
@@ -32,6 +32,11 @@ View Content
 
 **syntax**
 `fopen(filename,mode,include_path,context)`
+
+**fopen modes**
+
+mode|description
+-|-
 
 ```php
 $file = "passwords.csv";
