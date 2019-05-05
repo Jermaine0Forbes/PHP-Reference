@@ -3,6 +3,9 @@
 ## 4/27/19
 - how to highlight search terms
 
+## 4/12/19
+- add mysqli functions to the functions readme
+
 ## 3/28/19
 - learn how to download a file
 - learn how to do a bulk insert with csv
