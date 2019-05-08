@@ -66,6 +66,7 @@ I need to learn how to use
 - [how to update multiple rows][pdo-update-x]
 - [how to delete multiple rows][pdo-delete-x]
 - [how to get data with like statement][pdo-like]
+- [how to bind a number to a prepared  LIMIT statement][pdo-limit]
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -100,6 +101,8 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+
+[pdo-limit]:#how-to-bind-a-number-to-a-prepared-limit-statement
 [pdo-like]:#how-to-get-data-with-like-statement
 [delete-rows]:#how-to-delete-multiple-rows
 [create-rows]:#how-to-insert-multiple-rows
@@ -151,6 +154,72 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to bind a number to a prepared LIMIT statement
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [Binding number to the LIMIT of a PDO query with PHP [duplicate]
+](https://stackoverflow.com/questions/17178993/binding-number-to-the-limit-of-a-pdo-query-with-php)
+- [LIMIT keyword on MySQL with prepared statement [duplicate]
+](https://stackoverflow.com/questions/10014147/limit-keyword-on-mysql-with-prepared-statement)
+
+**Add this before you prepare a statement for limit**
+`$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);`
+
+
+```php
+
+try {
+
+  $db = new PDO("mysql:host=localhost;dbname=Testing","username","password");
+
+} catch (PDOException $e) {
+  $message = $e->getMessage();
+
+  $json = json_encode(["error" => $message]);
+}
+
+$amount= req["limit"];
+$query = "SELECT id , name, city FROM locate_peoples LIMIT :amount";
+
+// This supposed to remove any quotes from an integer/number so it should work now
+$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+$stmt = $db->prepare($query);
+$stmt->bindValue(":amount",$amount);
+$result = $stmt->execute();
+$stmt->bindColumn("id",$id);
+$stmt->bindColumn("name",$name);
+$stmt->bindColumn("city",$city);
+$json = json_encode(["error" => $stmt->errorInfo()[2]]);
+
+if($result){
+
+  while($stmt->fetch(PDO::FETCH_BOUND)){
+      $data[] = [
+        "id" => $id,
+        "name" => $name,
+        "city" => $city
+      ];
+  }
+
+
+  $json = json_encode($data);
+}
+
+  $stmt->closeCursor();
+
+
+```
+
+</details>
+
+
+[go back :house:][home]
 
 
 ### how to get data with like statement
