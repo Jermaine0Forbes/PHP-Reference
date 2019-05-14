@@ -163,9 +163,9 @@ View Content
 </summary>
 
 **reference**
-- [Binding number to the LIMIT of a PDO query with PHP [duplicate]
+- [Binding number to the LIMIT of a PDO query with PHP
 ](https://stackoverflow.com/questions/17178993/binding-number-to-the-limit-of-a-pdo-query-with-php)
-- [LIMIT keyword on MySQL with prepared statement [duplicate]
+- [LIMIT keyword on MySQL with prepared statement
 ](https://stackoverflow.com/questions/10014147/limit-keyword-on-mysql-with-prepared-statement)
 
 **Add this before you prepare a statement for limit**
