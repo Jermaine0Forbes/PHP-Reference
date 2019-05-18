@@ -29,6 +29,7 @@ View Content
 
 **reference**
 - [php.net](https://www.php.net/manual/en/function.fopen.php)
+- [w3schools](https://www.w3schools.com/php/func_filesystem_fopen.asp)
 
 **syntax**
 `fopen(filename,mode,include_path,context)`
@@ -37,6 +38,14 @@ View Content
 
 mode|description
 -|-
+r|Read only. Starts at the beginning of the file
+r+|Read/Write. Starts at the beginning of the file
+w|Write only. Opens and clears the contents of file; or creates a new file if it doesn't exist
+w+|Read/Write. Opens and clears the contents of file; or creates a new file if it doesn't exist
+a|Write only. Opens and writes to the end of the file or creates a new file if it doesn't exist
+a+|Read/Write. Preserves file content by writing to the end of the file
+x|Write only. Creates a new file. Returns FALSE and an error if file already exists
+x+|Read/Write. Creates a new file. Returns FALSE and an error if file already exists
 
 ```php
 $file = "passwords.csv";

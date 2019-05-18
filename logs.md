@@ -1,7 +1,7 @@
 # Logs
 
 ## 5/5/19
-- finish fopen modes table
+- finish fopen modes table -- done
 
 ## 4/27/19
 - how to highlight search terms
