@@ -1,5 +1,9 @@
 # Logs
 
+## 5/20/19
+- how to get path to root directory --done
+
+
 ## 5/5/19
 - finish fopen modes table -- done
 
@@ -13,7 +17,7 @@
 - learn how to download a file
 - learn how to do a bulk insert with csv
 - learn how to send emails
-- fopen
+- fopen -- done
 - fclose
 - feof
 

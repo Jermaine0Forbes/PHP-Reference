@@ -36,6 +36,9 @@ I need to learn how to use
 - [var_dump][var-dump]
 - [define][define]
 
+## Server
+
+- [how to get a root directory][root-dir]
 
 ## Filesystem
 - [how to write data to a file][put-contents]
@@ -67,6 +70,8 @@ I need to learn how to use
 - [how to delete multiple rows][pdo-delete-x]
 - [how to get data with like statement][pdo-like]
 - [how to bind a number to a prepared  LIMIT statement][pdo-limit]
+
+
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -101,7 +106,7 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
-
+[root-dir]:#how-to-get-a-root-directory
 [pdo-limit]:#how-to-bind-a-number-to-a-prepared-limit-statement
 [pdo-like]:#how-to-get-data-with-like-statement
 [delete-rows]:#how-to-delete-multiple-rows
@@ -154,6 +159,26 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to get a root directory
+
+<details>
+<summary>
+View Content
+</summary>
+
+**reference**
+- [How to get root dir on PHP](https://stackoverflow.com/questions/1427721/how-to-get-root-dir-on-php)
+
+```
+$_SERVER['DOCUMENT_ROOT'];
+```
+
+</details>
+
+
+[go back :house:][home]
+
 
 ### how to bind a number to a prepared LIMIT statement
 
@@ -1928,6 +1953,100 @@ a file, the first parameter should be the tmp_name from the file, example: `$_FI
 And the second parameter should be the destination where you put the file,
 example: `$destination = getcwd()."/files".DIRECTORY_SEPARATOR.$fileName ;`
 
+<details>
+<summary>
+If uploading with the fetch method
+</summary>
+
+**In php**
+
+```php
+<?php
+define("files",$_FILES);
+$fileName = files["file"]["name"];
+$tmpName = files["file"]["tmp_name"];
+$type = files["file"]["type"];
+$size = files["file"]["size"];
+$root = $_SERVER["DOCUMENT_ROOT"];
+$destination = $root."/files/$fileName";
+
+if(isset($fileName)){
+
+ $result =  move_uploaded_file( $tmpName, $destination);
+
+ if($result){
+   echo $fileName." moved to ".$destination;
+ }else{
+   echo "file has not been moved";
+ }
+
+}else{
+
+  echo "no file has been chosen";
+}
+
+// echo var_dump($_POST);
+
+
+```
+
+**In html**
+
+```html
+<section class="container">
+  <form id="myForm" class="form" action="index.html" enctype="multipart/form-data" method="post">
+    <input type="hidden" name="<?php echo ini_get("session.upload_progress.name"); ?>" value="myForm" />
+   <div class="form-group">
+     <input class="form-control col-5"  type="file" name="file" value="">
+   </div>
+   <input class="btn btn-primary" type="submit" name="" value="submit">
+  </form>
+</section>
+
+<script type="text/javascript">
+  (function(){
+     let form = document.getElementById("myForm"),
+        data = new FormData(),
+        options,
+        inpt = document.querySelector("input[name='file']"),
+         url = "ajax/upload-progress.php";
+
+
+     form.onsubmit = function(e){
+
+
+        e.preventDefault();
+
+        data.append("file", inpt.files[0])
+
+        options =  new Request(url,{
+          method:"POST",
+          body: data,
+
+        }
+      );
+
+        fetch(options)
+        .then(res => res.text())
+        .then(res => {
+          console.log(res)
+        })
+
+     }
+  })()
+</script>
+
+
+```
+
+
+<details>
+
+
+<details>
+<summary>
+If uploading on the same page
+</summary>
 
 **PHP code**
 ```php
@@ -2014,6 +2133,10 @@ if(isset(post["submit"])){
   })()
 </script>
 ```
+
+<details>
+
+
 
 </details>
 
