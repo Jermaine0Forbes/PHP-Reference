@@ -48,6 +48,7 @@ I need to learn how to use
 - [how to upload a file][upload-file]
 - [how to create a cvs file][csv-file]
 - [how to get csv data][get-csv]
+- [how to upload a file with ajax][upload-ajax]
 
 ## MySQLi
 
@@ -106,6 +107,7 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+[upload-ajax]:#how-to-upload-a-file-with-ajax
 [root-dir]:#how-to-get-a-root-directory
 [pdo-limit]:#how-to-bind-a-number-to-a-prepared-limit-statement
 [pdo-like]:#how-to-get-data-with-like-statement
@@ -159,6 +161,175 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to upload a file with ajax
+
+<details>
+<summary>
+View Content
+</summary>
+
+Here is one of the ways to upload a file through ajax
+
+**The PHP**
+
+```
+<?php
+define("files",$_FILES);
+$fileName = files["file"]["name"];
+$tmpName = files["file"]["tmp_name"];
+$type = files["file"]["type"];
+$size = files["file"]["size"];
+$error = files["file"]["error"];
+$root = $_SERVER["DOCUMENT_ROOT"];
+$destination = $root."/files/$fileName";
+
+
+// If an error does occur it will print out the reason why the file
+// was not uploaded 
+switch ($error) {
+  case 1:
+    $msg = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+    break;
+  case 2:
+    $msg = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.";
+  break;
+  case 3:
+    $msg = "The uploaded file was only partially uploaded.";
+    break;
+  case 4:
+    $msg = "No file was uploaded.";
+    break;
+  case 6:
+  $msg = "Missing a temporary folder.";
+    break;
+  case 7:
+    $msg = "Failed to write file to disk.";
+    break;
+
+  default:
+      $msg = "A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help";
+    break;
+}
+
+if(isset($fileName)){
+
+ $result =  move_uploaded_file( $tmpName, $destination);
+
+ if($result){
+   echo $fileName." moved to ".$destination;
+ }else{
+
+   // var_dump($error);
+   echo "file has not been moved, error message - $msg";
+ }
+
+}else{
+
+  echo "no file has been chosen";
+}
+
+```
+
+**The Ajax**
+
+```js
+(function(){
+   let form = document.getElementById("myForm"),
+      data = new FormData(),
+      options,
+      inpt = document.querySelector("input[name='file']"),
+      progress = document.querySelector("progress"),
+      status = document.querySelector("p#status"),
+       url = "ajax/upload-progress.php";
+
+       function setByte(num, size){
+         switch(size){
+           case "kb":
+            num = num / 1000;
+           break;
+           case "mb":
+           num = (num / 1000)/10;
+           break;
+           case "gb":
+           num = (num / 1000)/100;
+           break;
+         }
+         return num;
+       }
+
+
+   form.onsubmit = function(e){
+
+     $("input[type='submit']").val("uploading")
+
+      e.preventDefault();
+
+      data.append("file", inpt.files[0])
+
+
+    $.ajax({
+      xhr:() => {
+        const xhr = new window.XMLHttpRequest();
+        xhr.upload.addEventListener("progress", (e) =>{
+          let loading , total, percent;
+          if (e.lengthComputable){
+            loading = e.loaded;
+            total = e.total;
+            percent = (loading / total)*100;
+            status.innerHTML = setByte(loading,"kb")+" of "+setByte(total,"kb")+" kilobytes have been loaded"
+            progress.value= percent;
+          }//lengthComputable
+        }, false)//progress event
+
+        xhr.addEventListener("progress", (e) =>{
+          let loading , total, percent;
+          if (e.lengthComputable){
+            loading = e.loaded;
+            total = e.total;
+            percent = (loading / total)*100;
+            status.innerHTML = loading+" of "+total+" bytes have been loaded"
+              progress.value= percent;
+          }//lengthComputable
+        }, false)//progress event
+
+        return xhr;
+      },
+      type:"POST",
+      url: url,
+      contentType:false,
+      processData:false,
+      data:data
+    }).done((res) =>{
+      console.log(res+" it is done")
+    })
+
+
+   }//onsubmit
+})()
+```
+
+**The form**
+
+```html
+<section class="container">
+  <form id="myForm" class="form"  enctype="multipart/form-data" method="post">
+   <div class="form-group">
+     <input class="form-control col-5"  type="file" name="file" value="">
+   </div>
+   <input class="btn btn-primary" type="submit" name="" value="submit">
+  </form>
+  <div class="">
+    <progress  value="0" max="100">0%</progress>
+    <p id="status"></p>
+  </div>
+</section>
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### how to get a root directory
 
