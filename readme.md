@@ -101,12 +101,14 @@ I need to learn how to use
 
 ## Settings
 - [How to Setup Timezone][php-timezone]
+- [How to change the upload_max_filesize ][max-filesize]
 
 ## Suggestions
 - [best security practices]
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+[max-filesize]:#how-to-change-the-uploadmaxfilesize
 [upload-ajax]:#how-to-upload-a-file-with-ajax
 [root-dir]:#how-to-get-a-root-directory
 [pdo-limit]:#how-to-bind-a-number-to-a-prepared-limit-statement
@@ -162,6 +164,51 @@ I need to learn how to use
 
 ---
 
+### how to change the upload_max_filesize
+
+<details>
+<summary>
+View Content
+</summary>
+
+**references**
+- [Finding a Word in Vi/Vim](https://ccm.net/faq/982-finding-a-word-in-vi-vim)
+- [HOW CAN I EDIT THE PHP.INI FILE?](https://mediatemple.net/community/products/dv/204403894/how-can-i-edit-the-php.ini-file)
+
+1. First find the php.ini file and vim into it
+
+
+```
+sudo vim /etc/php/7.3/cli/php.ini
+
+```
+
+2. Next search the file by using the '?' key to search for the upload_max_filesize
+
+```
+// In vim type ? followed by the search word
+
+? upload_max_filesize
+```
+
+
+3. After you find it then change the file size maximum
+```
+upload_max_filesize = 200M
+```
+
+4. Exit out of the file, and reload apache
+
+```
+sudo service apache2 reload
+```
+
+</details>
+
+
+[go back :house:][home]
+
+
 ### how to upload a file with ajax
 
 <details>
@@ -169,12 +216,18 @@ I need to learn how to use
 View Content
 </summary>
 
+#### With JQuery
+
+<details>
+<summary>
+View Content
+</summary>
 Here is one of the ways to upload a file through ajax
 
 **The PHP**
 
-```
-<?php
+```php
+//<?php
 define("files",$_FILES);
 $fileName = files["file"]["name"];
 $tmpName = files["file"]["tmp_name"];
@@ -186,7 +239,7 @@ $destination = $root."/files/$fileName";
 
 
 // If an error does occur it will print out the reason why the file
-// was not uploaded 
+// was not uploaded
 switch ($error) {
   case 1:
     $msg = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
@@ -325,6 +378,165 @@ if(isset($fileName)){
   </div>
 </section>
 ```
+</details>
+
+
+
+#### With axios
+
+<details>
+<summary>
+View Content
+</summary>
+
+```php
+//<?php
+define("files",$_FILES);
+$fileName = files["file"]["name"];
+$tmpName = files["file"]["tmp_name"];
+$type = files["file"]["type"];
+$size = files["file"]["size"];
+$error = files["file"]["error"];
+$root = $_SERVER["DOCUMENT_ROOT"];
+$destination = $root."/files/$fileName";
+
+
+// If an error does occur it will print out the reason why the file
+// was not uploaded
+switch ($error) {
+  case 1:
+    $msg = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+    break;
+  case 2:
+    $msg = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.";
+  break;
+  case 3:
+    $msg = "The uploaded file was only partially uploaded.";
+    break;
+  case 4:
+    $msg = "No file was uploaded.";
+    break;
+  case 6:
+  $msg = "Missing a temporary folder.";
+    break;
+  case 7:
+    $msg = "Failed to write file to disk.";
+    break;
+
+  default:
+      $msg = "A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help";
+    break;
+}
+
+if(isset($fileName)){
+
+ $result =  move_uploaded_file( $tmpName, $destination);
+
+ if($result){
+   echo $fileName." moved to ".$destination;
+ }else{
+
+   // var_dump($error);
+   echo "file has not been moved, error message - $msg";
+ }
+
+}else{
+
+  echo "no file has been chosen";
+}
+
+```
+
+**The Ajax**
+
+```js
+(function(){
+   let form = document.getElementById("myForm"),
+      data = new FormData(),
+      options,
+      inpt = document.querySelector("input[name='file']"),
+      progress = document.querySelector("progress"),
+      status = document.querySelector("p#status"),
+       url = "ajax/upload-progress.php";
+
+       function setByte(num, size){
+         switch(size){
+           case "kb":
+            num = num / 1000;
+           break;
+           case "mb":
+           num = (num / 1000)/10;
+           break;
+           case "gb":
+           num = (num / 1000)/100;
+           break;
+         }
+         return num;
+       }
+
+
+   form.onsubmit = function(e){
+
+     $("input[type='submit']").val("uploading")
+
+      e.preventDefault();
+
+      data.append("file", inpt.files[0])
+
+
+      let config ={
+        onUploadProgress: (e)=>{
+          let loaded = setByte(e.loaded,"kb"), total = setByte(e.total,"kb")
+          percent = (loaded / total)*100,
+          percentValue = percent+"%" ;
+          progress.className = "progress mt-5";
+          bar.style.width = percentValue ;
+          bar.innerHTML = percentValue;
+          status.innerHTML = loaded+" of "+total+" kilobytes have been loaded";
+
+        }
+      }
+
+      axios.post(url,data,config)
+      .then(res => {
+        console.log(res)
+
+        submit.val("completed");
+        submit.removeClass("btn-primary").addClass("btn-success")
+      })
+      .catch(err => console.log("error: "+err))
+
+   }//onsubmit
+})()
+```
+
+**The form**
+
+```html
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js">
+
+</script>
+<section class="container">
+  <form id="myForm" class="form"  enctype="multipart/form-data" method="post">
+   <div class="form-group">
+     <input class="form-control col-5"  type="file" name="file" value="">
+   </div>
+   <input class="btn btn-primary" type="submit" name="" value="submit">
+  </form>
+  <div class="">
+    <div class="">
+      <div class="progress invisible">
+      <div class="progress-bar" role="progressbar"  aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <p id="status"></p>
+  </div>
+</section>
+```
+</details>
+
+
+
+
 
 </details>
 
