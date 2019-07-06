@@ -2,7 +2,7 @@
 
 
 ## 6/23/19
-- learn how to upload size in php.ini
+- learn how to upload size in php.ini --done
 
 ## 5/20/19
 - how to get path to root directory --done
@@ -32,7 +32,7 @@
 - how to google authentication
 - how to do facebook authentication
 - how to upload a file with a progress bar --done
-- how to create an ajax search result bar
+- how to create an ajax search result bar --done
 - how to insert,update,and delete records with PDO -- done
 
 ## 1/23/19

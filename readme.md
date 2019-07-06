@@ -108,7 +108,7 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
-[max-filesize]:#how-to-change-the-uploadmaxfilesize
+[max-filesize]:#how-to-change-the-upload_max_filesize
 [upload-ajax]:#how-to-upload-a-file-with-ajax
 [root-dir]:#how-to-get-a-root-directory
 [pdo-limit]:#how-to-bind-a-number-to-a-prepared-limit-statement
