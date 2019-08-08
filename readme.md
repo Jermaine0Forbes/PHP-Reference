@@ -2344,7 +2344,7 @@ If uploading with the fetch method
 **In php**
 
 ```php
-<?php
+//<?php
 define("files",$_FILES);
 $fileName = files["file"]["name"];
 $tmpName = files["file"]["tmp_name"];
@@ -2423,7 +2423,7 @@ if(isset($fileName)){
 ```
 
 
-<details>
+</details>
 
 
 <details>
@@ -2480,6 +2480,7 @@ if(isset(post["submit"])){
 }
 ```
 **HTML code**
+
 ```html
 <main>
     <section class="container">
@@ -2503,7 +2504,9 @@ if(isset(post["submit"])){
 </main
 ```
 **Javascript code**
+
 ```js
+
 <script type="text/javascript">
   (function(){
     const file = document.getElementById("file");
@@ -2517,7 +2520,7 @@ if(isset(post["submit"])){
 </script>
 ```
 
-<details>
+</details>
 
 
 
@@ -4144,7 +4147,7 @@ faker data
 
 <body>
     <header>
-        <?php
+        //<?php
 
 		// including the file
         require_once 'vendor/autoload.php';
@@ -4196,7 +4199,7 @@ a unique identifier with namespaces. This should ultimately avoid name collision
 **Hello.php**
 
 ```php
-    <?php
+  //  <?php
 
     namespace Greeting;
 
@@ -4233,7 +4236,7 @@ new Hello();// this should print out hello world
 
 ```php
 
-<?php
+//<?php
 
 namespace Zelda;
 
