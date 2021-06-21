@@ -1,6 +1,7 @@
 # How To
 
 - [how to create a simple routing system][simple-router]
+- [how to search associative array by value][search-assoc]
 
 ## MYSQLI
 - [insert data with a form][insert-form]
@@ -8,6 +9,7 @@
 - [how to delete data][delete-data]
 - [how to update data][update-data]
 
+[search-assoc]:#how-to-search-associative-array-by-value
 [insert-form]:#insert-data-with-a-form
 [update-data]:#how-to-update-data
 [delete-data]:#how-to-delete-data
@@ -15,7 +17,45 @@
 [simple-router]:#how-to-create-a-simple-routing-system
 [home]:#how-to
 
+### how to search associative array by value
 
+<details>
+<summary>
+View Content
+</summary>
+
+- [search associative array by value](https://stackoverflow.com/questions/12376992/search-associative-array-by-value)
+- [array_column](https://www.php.net/manual/en/function.array-column.php)
+- [array_search](https://www.php.net/manual/en/function.array-search.php)
+
+```php
+   $data = [
+     [
+       "id" => 1,
+       "first_name" => "john",
+       "last_name" => "jacob",
+     ],
+     [
+       "id" => 2,
+       "first_name" => "billy",
+       "last_name" => "buick",
+     ],
+     [
+       "id" => 3,
+       "first_name" => "christian",
+       "last_name" => "coleman",
+     ],
+   ];
+
+  $key = array_search('christian', array_column($data, 'first_name'));
+
+  //$key will output 2
+```
+
+</details>
+
+
+[go back :house:][home]
 
 ### insert data with a form
 
