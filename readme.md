@@ -6,7 +6,6 @@ I need to learn how to use
 
 - [php coding style guide][psr]
 
-
 ## Ajax Examples
 - [select ajax][ajax-select]
 - [how to update data with ajax][update-ajax]
@@ -16,10 +15,10 @@ I need to learn how to use
 ## Array Functions
 - [explode][explode]
 
-
 ## Classes
 - [how to autoload classes]
 - [how to use traits]
+- [how to call non-static method from a static method of the same class][call-static]
 
 ## Date Functions
 - [date][date]
@@ -29,7 +28,6 @@ I need to learn how to use
 ## Design Patterns
 - [design reference guide][design-reference]
 
-
 ## Essential Functions
 - [isset][isset]
 - [empty][empty]
@@ -37,7 +35,6 @@ I need to learn how to use
 - [define][define]
 
 ## Server
-
 - [how to get a root directory][root-dir]
 
 ## Filesystem
@@ -71,8 +68,6 @@ I need to learn how to use
 - [how to delete multiple rows][pdo-delete-x]
 - [how to get data with like statement][pdo-like]
 - [how to bind a number to a prepared  LIMIT statement][pdo-limit]
-
-
 
 ## Sanitize Forms
 - [filter_var][filter-var]
@@ -108,6 +103,7 @@ I need to learn how to use
 - [how to use .htaccess files]
 - [how to create a layout file]
 
+[call-static]:#how-to-call-nonstatic-method-from-a-static-method-of-the-same-class
 [max-filesize]:#how-to-change-the-upload_max_filesize
 [upload-ajax]:#how-to-upload-a-file-with-ajax
 [root-dir]:#how-to-get-a-root-directory
@@ -163,6 +159,45 @@ I need to learn how to use
 [home]:#php-reference
 
 ---
+
+### how to call non-static method from a static method of the same class
+
+<details>
+<summary>
+View Content
+</summary>
+
+:link: **Reference**
+
+- [stackoverflow](https://stackoverflow.com/questions/41631623/how-to-call-non-static-method-from-static-method-of-same-class)
+---
+
+:exclamation: **Note:**
+
+---
+
+```php
+class Foo {
+
+    public function fun1()
+    {
+        return 'non-static';
+    }
+
+    public static function fun2()
+    {
+      // This is the way to return the non-static method
+        return (new self)->fun1();
+    }
+}
+
+echo Foo::fun2();
+```
+
+</details>
+
+[go back :house:][home]
+
 
 ### how to change the upload_max_filesize
 
